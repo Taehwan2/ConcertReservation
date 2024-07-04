@@ -2,4 +2,5 @@
 
 [example]
 
-![KakaoTalk_Photo_2024-07-04-16-10-37](https://github.com/Taehwan2/ConcertReservation/assets/97010824/4ccb76b9-8c03-469b-90eb-2185876f80b1)
+
+![스크린샷 2024-07-05 오전 1 03 34](https://github.com/Taehwan2/ConcertReservation/assets/97010824/dbf4cba6-be41-424b-82dd-9a3d64a815ec)
