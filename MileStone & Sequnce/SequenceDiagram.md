@@ -1,5 +1,6 @@
-#[POINT SEQUENCE DIAGRAM]
-##POINT GET OR PATCH
+# [POINT SEQUENCE DIAGRAM]
+## POINT GET OR PATCH
+
 <img width="504" alt="스크린샷 2024-07-02 오후 8 36 09" src="https://github.com/Taehwan2/ConcertReservation/assets/97010824/63fb3f11-1671-4819-830d-a7287b52ea86">
 
 <img width="579" alt="스크린샷 2024-07-02 오후 8 36 21" src="https://github.com/Taehwan2/ConcertReservation/assets/97010824/4360ade8-87f0-4085-9aec-f9633e9fda87">
