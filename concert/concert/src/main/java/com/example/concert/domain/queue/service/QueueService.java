@@ -53,6 +53,7 @@ public class QueueService {
 
      @Transactional
     public void activeWaitingToWorking(int size) {
+        if(size>QUEUE_LIMIT_SIZE)size=QUEUE_LIMIT_SIZE;
         List<Queue> waitingQueues = queueRepository.findWaitingQueues(size);
         waitingQueues.forEach(queue -> {
             queue.setWorking(QUEUE_EXPIRED_TIME);
@@ -83,8 +84,8 @@ public class QueueService {
     }
 
     public boolean isWorking(Long id){
-       var queue = queueRepository.findQueue(id);
-        return queue.getUserStatus()==UserStatus.WORKING;
+       var queue = queueRepository.findWorkingQueue(id,UserStatus.WORKING);
+        return queue;
     }
 
 

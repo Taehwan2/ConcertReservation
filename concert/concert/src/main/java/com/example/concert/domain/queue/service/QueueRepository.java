@@ -15,6 +15,8 @@ public interface QueueRepository {
 
     List<Queue> findStatusIsWorkingWithPessimisticLock(UserStatus working);
 
+    Boolean findWorkingQueue(Long userId,UserStatus userStatus);
+
     Queue findQueue(Long userId);
 
     int findRanking(Long waitId,UserStatus userStatus);

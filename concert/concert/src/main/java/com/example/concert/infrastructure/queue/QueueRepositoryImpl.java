@@ -33,8 +33,14 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
+    public Boolean findWorkingQueue(Long userId,UserStatus userStatus) {
+       if(queueJpaRepository.findByUserIdAndUserStatus(userId,userStatus).isPresent())return true;
+       else return false;
+    }
+
+    @Override
     public Queue findQueue(Long userId) {
-        return queueJpaRepository.findByUserId(userId).orElseThrow(()->new NoSuchElementException("No Such Queue"));
+        return queueJpaRepository.findByUserId(userId).orElseThrow(()->new NoSuchElementException("NoSuchQueue"));
     }
 
     @Override
@@ -54,7 +60,7 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public List<Queue> findWaitingQueues(int size) {
-        PageRequest pageRequest = PageRequest.of(0, size);
+        PageRequest pageRequest = PageRequest.of(1, size);
         return queueJpaRepository.findUserStatusWaitingLimitSize(UserStatus.WAITING,pageRequest);
     }
 }

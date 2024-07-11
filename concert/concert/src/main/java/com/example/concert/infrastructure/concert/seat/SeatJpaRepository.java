@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
 
-    List<ConcertSeat> findByConcertDetailIdAndSeatStatus(Long concertDetailId, SeatStatus status);
+    List<ConcertSeat> findByConcertDetailIdAndSeatStatusNot(Long concertDetailId, SeatStatus status);
 
     ConcertSeat findByUserIdAndConcertDetailId(Long userId, Long seatId);
 

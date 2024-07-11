@@ -1,4 +1,3 @@
-/*
 package com.example.concert.common;
 
 import com.example.concert.domain.queue.service.QueueService;
@@ -26,4 +25,3 @@ public class QueueCheckInterceptor implements HandlerInterceptor {
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }
-*/

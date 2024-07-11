@@ -16,7 +16,7 @@ public class ConcertPaymentController implements ConcertPaymentControllerDocs {
     private final ConcertReserveFacade concertReserveFacade;
     private final ReservationMapper reservationMapper;
 
-    @PostMapping("/concert/reservation/days/{concertId}")
+    @PostMapping("/concert/reservation/days")
     public Payment payment(@RequestBody ConcertSeatRequest concertSeatRequest) throws Exception {
         var payment  =  concertReserveFacade.concertPayment(concertSeatRequest);
         return payment;
