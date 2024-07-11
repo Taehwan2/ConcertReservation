@@ -25,8 +25,9 @@ public class SeatService {
     
 
     public List<ConcertSeat> FindAbleSeats(Long concertDetailId) throws Exception {
-        List<ConcertSeat> reservedSeats = seatRepository.findStatusReserved(concertDetailId, SeatStatus.RESERVED);
+        List<ConcertSeat> reservedSeats = seatRepository.findStatusReserved(concertDetailId, SeatStatus.RESERVABLE);
         checkSize(reservedSeats.size());
+        System.out.println("size is"+reservedSeats.size());
         List<ConcertSeat> concertSeats = getAbleSeats(reservedSeats);
         return concertSeats;
     }
@@ -36,7 +37,7 @@ public class SeatService {
                 .map(ConcertSeat::getSeatNo)
                 .collect(Collectors.toSet());
         return IntStream.rangeClosed(1,SEAT_LIMIT)
-                .filter(a-> !reservedSeats.contains(a))
+                .filter(a-> !reservedSeatNumbers.contains(a))
                 .mapToObj(a-> ConcertSeat.builder()
                         .seatNo(a)
                         .price(BigDecimal.valueOf(a*1000))

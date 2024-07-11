@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -17,9 +19,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @CreatedBy
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 }

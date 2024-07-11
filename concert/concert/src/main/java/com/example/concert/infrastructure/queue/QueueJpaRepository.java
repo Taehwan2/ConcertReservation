@@ -39,4 +39,6 @@ public interface QueueJpaRepository extends JpaRepository<Queue,Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT q FROM Queue q WHERE q.userStatus = :status ORDER BY q.createdAt")
     List<Queue> findUserStatusWaitingLimitSize(@Param("status") UserStatus status, Pageable pageable);
+
+    Optional<Queue> findByUserIdAndUserStatus(Long userId, UserStatus userStatus);
 }

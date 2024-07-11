@@ -12,13 +12,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final QueueService queueService;
 
-/*    @Override
+  @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(new QueueCheckInterceptor(queueService))
                 .addPathPatterns(
                         "/concert/reservation/days/{concertId}",
                         "/concert/seats/{concertDetailId}",
-                        "/concert/seat"
+                        "/concert/seat",
+                        "/concert/reservation/days"
                 );
-    }*/
+    }
 }
