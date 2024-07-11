@@ -1,17 +1,15 @@
-package com.example.concert.domain.pointHistory;
+package com.example.concert.domain.user.pointHistory.entity;
 
 import com.example.concert.Presentation.point.model.PointHistoryResponse;
 import com.example.concert.common.BaseEntity;
+import com.example.concert.domain.user.pointHistory.enumType.PointType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "point_history")
@@ -32,11 +30,27 @@ public class PointHistory extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PointType pointType;
 
+    public void setPointType(PointType pointType) {
+        this.pointType = pointType;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public static PointHistoryResponse entityToResponse(PointHistory point) {
         return PointHistoryResponse.builder()
                 .historyId(point.historyId)
                 .userId(point.userId)
                 .pointType(point.pointType)
                 .build();
+    }
+
+    public void checkType(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            this.setPointType(PointType.USE);
+        } else if (amount.compareTo(BigDecimal.ZERO) > 0) {
+           this.setPointType(PointType.CHARGE);
+        }
     }
 }

@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -58,7 +57,7 @@ class ConcertPaymentControllerTest {
                 .build();
 
         //Todo 예약완료후 다른 로직들과 Facade계층을 통해서 ReservationResponse를 반환하는 로직
-        given(concertReserveFacade.concertPayment(any(ConcertSeatRequest.class))).willReturn(reservation);
+        given(concertReserveFacade.concertPayment(any(ConcertSeatRequest.class))).willReturn(any());
         given(reservationMapper.entityToResponse(any(Reservation.class))).willReturn(reservationResponse);
 
         String requestContent = "{\"userId\": 1, \"seatId\": 1}";

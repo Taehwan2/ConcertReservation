@@ -37,7 +37,7 @@ class ConcertControllerTest {
     @Test
     @DisplayName("사용자가 자신의 대기 상태를 받아올 수 있는 로직 검증")
     public void testGetQueue() throws Exception {
-        Queue queue = new Queue(1L, 1L, UserStatus.WAITING, LocalDateTime.now());
+        Queue queue = new Queue(1L, 1L, 10,UserStatus.WAITING, LocalDateTime.now());
 
         //given
         given(userQueueFacade.getQueue(eq(1L), eq(1L))).willReturn(queue);
@@ -55,8 +55,8 @@ class ConcertControllerTest {
     @Test
     @DisplayName("사용자가 자신을 대기열에 포함시킬 수 있는 코드")
     public void testEnrollQueue() throws Exception {
-        Queue queue = new Queue(1L, 1L, UserStatus.WAITING, LocalDateTime.now());
-        QueueRequest queueRequest = new QueueRequest(1L, UserStatus.WAITING);
+        Queue queue = new Queue(1L, 1L,10, UserStatus.WAITING, LocalDateTime.now());
+        QueueRequest queueRequest = new QueueRequest(1L);
 
         //given
         given(userQueueFacade.enrollQueue(any(QueueRequest.class))).willReturn(queue);

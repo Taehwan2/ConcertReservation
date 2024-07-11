@@ -12,6 +12,4 @@
     public class QueueRequest {
         private Long userId;
 
-        private UserStatus userStatus;
-
     }

@@ -1,4 +1,4 @@
-package com.example.concert.domain.pointHistory;
+package com.example.concert.domain.user.pointHistory.enumType;
 
 import lombok.Getter;
 
