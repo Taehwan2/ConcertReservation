@@ -15,7 +15,8 @@ import java.math.BigDecimal;
 public class ConcertSeatResponse {
     private Long concertSeatId;
     private  Long concertDetailId;
+    private Long userId;
     private SeatStatus seatStatus;
-    private String seatNo;
+    private Integer seatNo;
     private BigDecimal price;
 }

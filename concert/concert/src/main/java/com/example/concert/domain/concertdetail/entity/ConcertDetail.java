@@ -1,9 +1,7 @@
-package com.example.concert.domain.concertdetail;
+package com.example.concert.domain.concertdetail.entity;
 
 import com.example.concert.Presentation.concert.model.date.DatesResponse;
-import com.example.concert.Presentation.concert.model.seat.ConcertSeatResponse;
 import com.example.concert.common.BaseEntity;
-import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

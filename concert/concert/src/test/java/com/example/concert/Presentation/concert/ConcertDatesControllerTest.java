@@ -1,8 +1,7 @@
 package com.example.concert.Presentation.concert;
 
 import com.example.concert.Application.ConcertFacade;
-import com.example.concert.Presentation.concert.model.date.DatesResponse;
-import com.example.concert.domain.concertdetail.ConcertDetail;
+import com.example.concert.domain.concertdetail.entity.ConcertDetail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

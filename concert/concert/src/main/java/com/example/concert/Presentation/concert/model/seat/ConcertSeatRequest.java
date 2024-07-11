@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConcertSeatRequest {
     Long userId;
-    Long seatId;
+    Long concertDetailId;
+    int seatNo;
 }

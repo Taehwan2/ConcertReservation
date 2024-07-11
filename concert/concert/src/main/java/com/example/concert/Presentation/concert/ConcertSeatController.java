@@ -5,6 +5,7 @@ import com.example.concert.Presentation.concert.model.queue.QueueRequest;
 import com.example.concert.Presentation.concert.model.queue.QueueResponse;
 import com.example.concert.Presentation.concert.model.seat.ConcertSeatRequest;
 import com.example.concert.Presentation.concert.model.seat.ConcertSeatResponse;
+import com.example.concert.Presentation.concert.swaggerController.ConcertSeatDocsController;
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.queue.entitiy.Queue;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-public class ConcertSeatController {
+public class ConcertSeatController implements ConcertSeatDocsController {
 
     private final UserSeatFacade userSeatFacade;
 
     @GetMapping("/concert/seats/{concertDetailId}")
-    public List<ConcertSeatResponse> getAbleSeats(@PathVariable(name = "concertDetailId")Long concertDetailId){
+    public List<ConcertSeatResponse> getAbleSeats(@PathVariable(name = "concertDetailId")Long concertDetailId) throws Exception {
         var seats  =  userSeatFacade.getAbleSeats(concertDetailId);
         return seats.stream()
                 .map(ConcertSeat::entityToResponse)
@@ -28,7 +29,7 @@ public class ConcertSeatController {
     }
 
     @PatchMapping("/concert/seat")
-    public ConcertSeatResponse enrollSeats(@RequestBody ConcertSeatRequest concertSeatRequest){
+    public ConcertSeatResponse enrollSeats(@RequestBody ConcertSeatRequest concertSeatRequest) throws Exception {
         var seat  =  userSeatFacade.reserveSeats(concertSeatRequest);
         return ConcertSeat.entityToResponse(seat);
 

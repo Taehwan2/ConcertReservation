@@ -49,17 +49,19 @@ class ConcertSeatControllerTest {
     void getAbleSeatsTest() throws Exception {
         ConcertSeat seat1 = new ConcertSeat(
                 1L,
+                1L,
                 100L,
-                SeatStatus.CANRESERVATION,
-                "1",
+                SeatStatus.RESERVABLE,
+                1,
                 new BigDecimal("100.00")
         );
 
         ConcertSeat seat2 = new ConcertSeat(
                 2L,
+                2L,
                 100L,
-                SeatStatus.CANRESERVATION,
-                "2",
+                SeatStatus.RESERVABLE,
+                2,
                 new BigDecimal("120.00")
         );
 
@@ -83,9 +85,10 @@ class ConcertSeatControllerTest {
     void enrollSeatsTest() throws Exception {
         ConcertSeat seat = new ConcertSeat(
                 1L,
+                1L,
                 100L,
-                SeatStatus.CANRESERVATION,
-                "1",
+                SeatStatus.TEMP,
+                1,
                 new BigDecimal("100.00")
         );
 

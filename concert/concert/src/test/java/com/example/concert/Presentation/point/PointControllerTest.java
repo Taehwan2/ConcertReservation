@@ -2,21 +2,18 @@ package com.example.concert.Presentation.point;
 
 import com.example.concert.Application.UserPointFacade;
 import com.example.concert.Presentation.point.model.PointRequest;
-import com.example.concert.domain.point.entity.User;
-import com.example.concert.domain.pointHistory.PointHistory;
-import com.example.concert.domain.pointHistory.PointType;
+import com.example.concert.domain.user.entity.User;
+import com.example.concert.domain.user.pointHistory.entity.PointHistory;
+import com.example.concert.domain.user.pointHistory.enumType.PointType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

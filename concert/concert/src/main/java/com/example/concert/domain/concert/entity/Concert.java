@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Concert extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
