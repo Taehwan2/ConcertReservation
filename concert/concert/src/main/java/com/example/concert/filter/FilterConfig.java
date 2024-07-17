@@ -10,8 +10,10 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<LogFilter> loggingFilter() {
+        //Todo Bean 으로 등록
         FilterRegistrationBean<LogFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new LogFilter());
+        //Todo 모든 패턴 등록
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
