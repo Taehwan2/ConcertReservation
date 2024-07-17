@@ -3,6 +3,7 @@ package com.example.concert.infrastructure.queue;
 import com.example.concert.domain.queue.entitiy.Queue;
 import com.example.concert.domain.queue.entitiy.UserStatus;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -38,7 +39,7 @@ public interface QueueJpaRepository extends JpaRepository<Queue,Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT q FROM Queue q WHERE q.userStatus = :status ORDER BY q.createdAt")
-    List<Queue> findUserStatusWaitingLimitSize(@Param("status") UserStatus status, Pageable pageable);
+    Page<Queue> findUserStatusWaitingLimitSize(@Param("status") UserStatus status, Pageable pageable);
 
     Optional<Queue> findByUserIdAndUserStatus(Long userId, UserStatus userStatus);
 }

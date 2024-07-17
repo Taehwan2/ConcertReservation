@@ -46,6 +46,10 @@ public class QueueService {
     @Transactional
      public void  checkExpiredAtAndUpdateDone(){
         List<Queue> expiredList = queueRepository.findExpiredQueueOnWorking();
+
+        if (expiredList == null || expiredList.isEmpty()) {
+            return;
+        }
         expiredQueues(expiredList);
         //Todo 바꿔야댐
         activeWaitingToWorking(expiredList.size());
@@ -76,7 +80,7 @@ public class QueueService {
     }
 
     private void validateIfNotRegistered(Long userId) throws Exception {
-        Queue queue = queueRepository.findByUserIdAndStatusIn(userId,List.of(UserStatus.WAITING,UserStatus.WAITING));
+        Queue queue = queueRepository.findByUserIdAndStatusIn(userId,List.of(UserStatus.WAITING,UserStatus.WORKING));
         if(queue==null)return;
         queue.alreadyWait();
         queue.alreadyWorking();;
@@ -84,8 +88,8 @@ public class QueueService {
     }
 
     public boolean isWorking(Long id){
-       var queue = queueRepository.findWorkingQueue(id,UserStatus.WORKING);
-        return queue;
+       var isWorking = queueRepository.findWorkingQueue(id,UserStatus.WORKING);
+        return isWorking;
     }
 
 

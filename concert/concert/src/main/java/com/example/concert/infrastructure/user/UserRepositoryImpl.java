@@ -2,6 +2,8 @@ package com.example.concert.infrastructure.user;
 
 import com.example.concert.domain.user.entity.User;
 import com.example.concert.domain.user.service.UserRepository;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserPoint(Long userId) {
-        return userJpaRepository.findById(userId).orElseThrow(()->new NoSuchElementException("UserNotFound"));
+        return userJpaRepository.findById(userId).orElseThrow(()->new BusinessBaseException(ErrorCode.USER_NOT_FOUND));
     }
 }

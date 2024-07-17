@@ -21,7 +21,7 @@ public interface ConcertSeatDocsController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="예약 가능 좌석",content = @Content(schema =
             @Schema(implementation = ConcertSeatResponse.class))),
-            @ApiResponse(responseCode = "404", description = "예약가능한 옵션이 없음 NoSuchConcert")
+            @ApiResponse(responseCode = "404", description = " CONCERT_NOT_FOUND(HttpStatus.NOT_FOUND,\"C0\",\"콘서트가 없습니다.\"),")
     })
     List<ConcertSeatResponse> getAbleSeats(Long concertDetailId) throws  Exception;
 
@@ -29,7 +29,8 @@ public interface ConcertSeatDocsController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="좌석 등록 성공",content = @Content(schema =
             @Schema(implementation = ConcertSeatResponse.class))),
-            @ApiResponse(responseCode = "404", description = "대기열에 등록된게 없음,이미 대기열 탈출, NoSuchConcert")
+            @ApiResponse(responseCode = "404", description = "    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND,\"S0\",\"좌석을 찾을 수 없습니다.\"),\n" +
+                    "    SEAT_NO_INVALID(HttpStatus.BAD_REQUEST,\"S1\",\"잘못된 좌석번호입니다.\"),")
     })
     ConcertSeatResponse enrollSeats(@RequestBody ConcertSeatRequest concertSeatRequest) throws Exception;
 

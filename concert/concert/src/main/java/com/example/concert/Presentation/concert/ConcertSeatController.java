@@ -1,13 +1,10 @@
 package com.example.concert.Presentation.concert;
 
 import com.example.concert.Application.UserSeatFacade;
-import com.example.concert.Presentation.concert.model.queue.QueueRequest;
-import com.example.concert.Presentation.concert.model.queue.QueueResponse;
 import com.example.concert.Presentation.concert.model.seat.ConcertSeatRequest;
 import com.example.concert.Presentation.concert.model.seat.ConcertSeatResponse;
 import com.example.concert.Presentation.concert.swaggerController.ConcertSeatDocsController;
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
-import com.example.concert.domain.queue.entitiy.Queue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

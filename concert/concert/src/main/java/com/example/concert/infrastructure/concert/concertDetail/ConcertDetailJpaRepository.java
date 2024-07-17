@@ -11,7 +11,7 @@ import java.util.List;
 public interface ConcertDetailJpaRepository extends JpaRepository<ConcertDetail,Long> {
 
     @Query("SELECT c FROM ConcertDetail c where  :now<c.startDate  and :now <c.reservationStartDate and c.concertId =:concertId")
-    List<ConcertDetail> findAllByConcertId(@Param("concertId") Long concertId, @Param("now") LocalDateTime now);
+    List<ConcertDetail> findAllByConcertIdAndBeforeStartDateAndReservationStartDate(@Param("concertId") Long concertId, @Param("now") LocalDateTime now);
 
 
 }

@@ -7,9 +7,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: create
-      show-sql: true
       properties:
         hibernate:
           dialect: org.hibernate.dialect.MySQL8Dialect
@@ -20,9 +20,7 @@ spring:
     init:
       platform: mysql
 
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
-          type: TRACE
+logging:
+  level:
+    root: INFO
+    com.example.concert.filter.LogFilter: DEBUG

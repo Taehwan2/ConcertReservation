@@ -1,4 +1,4 @@
-package com.example.concert.common;
+package com.example.concert.interceptor;
 
 import com.example.concert.domain.queue.service.QueueService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final QueueService queueService;
 
   @Override
+  //Todo 실제 메인 로직이 담긴 코드들
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(new QueueCheckInterceptor(queueService))
                 .addPathPatterns(

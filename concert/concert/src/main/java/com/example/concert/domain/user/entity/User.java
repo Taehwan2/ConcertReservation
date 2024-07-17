@@ -5,6 +5,8 @@ import com.example.concert.Presentation.point.model.PointResponse;
 
 import com.example.concert.common.BaseEntity;
 import com.example.concert.domain.user.pointHistory.enumType.PointType;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,10 +46,10 @@ public class User  extends BaseEntity {
         BigDecimal tempAmount = this.getPoint().add(amount);
 
         // amount 0일시에 예외 처리
-        if (amount.compareTo(BigDecimal.ZERO) == 0) throw new Exception("Amount cannot be zero.");
+        if (amount.compareTo(BigDecimal.ZERO) == 0) throw new BusinessBaseException(ErrorCode.USER_AMOUNT_CANNOT_BE_ZERO);
 
         // 잔고가 0 이하일 때 예외 처리
-        if (tempAmount.compareTo(BigDecimal.ZERO) < 0) throw  new Exception("Can't not be use Your Point is less then 0");
+        if (tempAmount.compareTo(BigDecimal.ZERO) < 0) throw  new BusinessBaseException(ErrorCode.USER_AMOUNT_CANNOT_BE_ZERO);
 
 
         this.setPoint(tempAmount);

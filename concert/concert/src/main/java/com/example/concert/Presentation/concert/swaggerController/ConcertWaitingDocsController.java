@@ -24,7 +24,7 @@ public interface ConcertWaitingDocsController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="getQueue",content = @Content(schema =
             @Schema(implementation = QueueResponse.class))),
-            @ApiResponse(responseCode = "404", description = "대기열에 등록된게 없음,이미 대기열 탈출 No Such Queue")
+            @ApiResponse(responseCode = "404", description = "  QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND,\\\"Q3\\\",\\\"대기열을 찾을 수 없습니다.\\\"),\\n\"")
     })
     QueueResponse getQueue(Long userId, Long waitId ) throws Exception;
 
@@ -32,7 +32,10 @@ public interface ConcertWaitingDocsController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="대기열 등록성공",content = @Content(schema =
             @Schema(implementation = QueueResponse.class))),
-            @ApiResponse(responseCode = "404", description = "대기열에 등록된게 없음,이미 대기열 탈출 No Such Queue,already wait,AlreadyWorking")
+            @ApiResponse(responseCode = "404", description = "QUEUE_ALREADY_WAITING(HttpStatus.CONFLICT, \"Q1\", \"이미 대기 중입니다.\"),\n" +
+                    "    QUEUE_ALREADY_WORKING(HttpStatus.CONFLICT, \"Q2\", \"이미 작업 중입니다.\"),\n" +
+                    "    QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND,\"Q3\",\"대기열을 찾을 수 없습니다.\"),\n" +
+                    "    QUEUE_NOT_WORKING(HttpStatus.NOT_FOUND,\"Q4\",\"현재 대기열을 통과하지 못했습니다.\"),")
     })
     QueueResponse enrollQueue(@RequestBody QueueRequest queueRequest) throws Exception;
 }

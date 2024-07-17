@@ -2,18 +2,22 @@ package com.example.concert.infrastructure.concert.seat;
 
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.entity.SeatStatus;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
 
     List<ConcertSeat> findByConcertDetailIdAndSeatStatusNot(Long concertDetailId, SeatStatus status);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     ConcertSeat findByUserIdAndConcertDetailId(Long userId, Long seatId);
 
     @Query("SELECT a FROM ConcertSeat a WHERE a.updatedAt <= :localDateTime and a.seatStatus =:temp")
@@ -26,4 +30,5 @@ public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
     List<ConcertSeat> findByUserIdAndSeatStatus(Long userId, SeatStatus temp);
 
 
+    ConcertSeat findByConcertDetailIdAndSeatNo(Long concertDetailId, int seatNo);
 }

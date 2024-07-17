@@ -30,5 +30,8 @@ public class QueueResponse {
     @Schema(description = "만료시간")
     private LocalDateTime expiredAt;
 
+    @Schema(description = "만료여부")
+    private boolean expired;
+
 
 }

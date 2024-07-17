@@ -3,6 +3,8 @@ package com.example.concert.domain.concertSeat.service.service;
 import com.example.concert.Presentation.concert.model.seat.ConcertSeatRequest;
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.entity.SeatStatus;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -54,9 +56,9 @@ public class SeatService {
         Long userId = concertSeatRequest.getUserId();
         Long concertDetailId = concertSeatRequest.getConcertDetailId();
         int seatNo = concertSeatRequest.getSeatNo();
-        if(seatNo<0 || seatNo>SEAT_LIMIT)throw new Exception("No SEAT");
+        if(seatNo<0 || seatNo>SEAT_LIMIT)throw new BusinessBaseException(ErrorCode.SEAT_NO_INVALID);
 
-        ConcertSeat concertSeat = seatRepository.findSeat(userId, concertDetailId );
+        ConcertSeat concertSeat = seatRepository.findSeat(concertDetailId,concertSeatRequest.getSeatNo());
 
         if(concertSeat==null){
             var request = ConcertSeat.builder().concertDetailId(concertDetailId)
@@ -81,6 +83,9 @@ public class SeatService {
     public void checkExpiredSeat(){
         
         List<ConcertSeat> concertList = seatRepository.findExpiredInTemp(SeatStatus.TEMP, LocalDateTime.now().minusMinutes(SEAT_TIME));
+        if (concertList == null || concertList.isEmpty()) {
+            return;
+        }
         List<Long> concertId = concertList.stream()
                 .map(ConcertSeat::getConcertSeatId).toList();
           seatRepository.changeSeatsStatus(concertId);
@@ -92,14 +97,14 @@ public class SeatService {
     }
 
     @Transactional
-    public List<ConcertSeat> updatedSeat(Long userId, List<ConcertSeat> tempSeats) {
+    public List<ConcertSeat> updatedSeatToReserved(Long userId, List<ConcertSeat> tempSeats) {
 
         tempSeats.forEach(a->a.setSeatStatus(SeatStatus.RESERVED));
 
         List<Long> seatIds = tempSeats.stream()
                 .map(ConcertSeat::getConcertSeatId).toList();
 
-        seatRepository.updatedSeat(userId,seatIds);
+        seatRepository.updatedSeatToReserved(userId,seatIds);
         return tempSeats;
     }
 }

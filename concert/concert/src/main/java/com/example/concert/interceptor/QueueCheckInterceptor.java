@@ -1,6 +1,8 @@
-package com.example.concert.common;
+package com.example.concert.interceptor;
 
 import com.example.concert.domain.queue.service.QueueService;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +18,11 @@ public class QueueCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String userQueueStringId = request.getHeader("Authorization");
         if(userQueueStringId==null){
-            throw new Exception("No userId In Queue");
+            throw new BusinessBaseException(ErrorCode.QUEUE_NOT_FOUND);
         }
         boolean statusGoing = queueService.isWorking(Long.valueOf(userQueueStringId));
         if(!statusGoing){
-            throw new Exception("Not working In Queue");
+            throw new BusinessBaseException(ErrorCode.QUEUE_NOT_WORKING);
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

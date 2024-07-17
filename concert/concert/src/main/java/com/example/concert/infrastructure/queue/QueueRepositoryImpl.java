@@ -3,13 +3,14 @@ package com.example.concert.infrastructure.queue;
 import com.example.concert.domain.queue.entitiy.Queue;
 import com.example.concert.domain.queue.entitiy.UserStatus;
 import com.example.concert.domain.queue.service.QueueRepository;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public Queue findQueue(Long userId) {
-        return queueJpaRepository.findByUserId(userId).orElseThrow(()->new NoSuchElementException("NoSuchQueue"));
+        return queueJpaRepository.findByUserId(userId).orElseThrow(()->new BusinessBaseException(ErrorCode.QUEUE_NOT_FOUND));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public List<Queue> findWaitingQueues(int size) {
-        PageRequest pageRequest = PageRequest.of(1, size);
-        return queueJpaRepository.findUserStatusWaitingLimitSize(UserStatus.WAITING,pageRequest);
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return queueJpaRepository.findUserStatusWaitingLimitSize(UserStatus.WAITING,pageRequest).getContent();
     }
 }
