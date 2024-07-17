@@ -9,6 +9,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 @Slf4j
+//Todo HttpRequest 와 HttpsResponse 의 로그를 찍기 위한 class
 public class LogFilter implements Filter {
 
     @Override
@@ -25,7 +26,7 @@ public class LogFilter implements Filter {
         int httpStatus = httpServletResponse.getStatus();
         String resContent = new String(httpServletResponse.getContentAsByteArray());
 
-
+        //Todo Response 는 한번 출력하면 복사해서 사용해야한다.
         httpServletResponse.copyBodyToResponse();
         log.info("status: {}, response {}", httpStatus, resContent);
     }

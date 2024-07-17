@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+//Todo LogFilter 등록 실제 필터가 동작하기 위해 Spring 에 FILTER 를 등록해진다.
 public class FilterConfig {
 
     @Bean
