@@ -3,6 +3,8 @@ package com.example.concert.infrastructure.concert.seat;
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.entity.SeatStatus;
 import com.example.concert.domain.concertSeat.service.service.SeatRepository;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +22,8 @@ public class SeatRepositoryImpl implements SeatRepository {
     }
 
     @Override
-    public ConcertSeat findSeat(Long userId, Long concertDetailId) {
-        return seatJpaRepository.findByUserIdAndConcertDetailId(userId,concertDetailId);
+    public ConcertSeat findSeat(Long concertDetailId,int seatNo) {
+        return seatJpaRepository.findByConcertDetailIdAndSeatNo(concertDetailId,seatNo);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SeatRepositoryImpl implements SeatRepository {
     }
 
     @Override
-    public void updatedSeat(Long userId, List<Long> seatIds) {
+    public void updatedSeatToReserved(Long userId, List<Long> seatIds) {
         seatJpaRepository.updateSeatStatusAndUserId(SeatStatus.RESERVED,userId,seatIds);
     }
 }

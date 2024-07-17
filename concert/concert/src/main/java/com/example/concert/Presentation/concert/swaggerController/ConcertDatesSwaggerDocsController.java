@@ -23,7 +23,7 @@ public interface ConcertDatesSwaggerDocsController {
             @ApiResponse(responseCode = "201", description="getDates",content = @Content(schema =
             @Schema(implementation = DatesResponse.class))),
             
-            @ApiResponse(responseCode = "404", description = "콘서트 없음 발생가능")
+            @ApiResponse(responseCode = "404", description = " CONCERT_NOT_FOUND(HttpStatus.NOT_FOUND,\"C0\",\"콘서트가 없습니다.\"),")
     })
     List<DatesResponse> getAbleDates(Long concertId);
 

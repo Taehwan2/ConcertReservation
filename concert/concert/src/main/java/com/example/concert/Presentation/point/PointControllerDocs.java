@@ -21,7 +21,7 @@ public interface PointControllerDocs {
     @ApiResponses(value ={
      @ApiResponse(responseCode = "201", description="포인트 반환",content = @Content(schema =
      @Schema(implementation = PointResponse.class))),
-     @ApiResponse(responseCode = "404",description = "사용자 없음 발생가능  UserNotFound 예외" )
+     @ApiResponse(responseCode = "404",description = "USER_NOT_FOUND(HttpStatus.NOT_FOUND,\"U0\",\"유저를 찾을 수 없습니다.\")" )
     })
     PointResponse lookupPoint(Long userId);
 
@@ -30,7 +30,10 @@ public interface PointControllerDocs {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="포인트 내역 반환",content = @Content(schema =
             @Schema(implementation = PointHistoryResponse.class))),
-            @ApiResponse(responseCode = "404",description = "사용자 없음 발생가능, 포인트 사용 실패 가능 UserNotFound 예외" )
+            @ApiResponse(responseCode = "404",description =
+                    " USER_NOT_FOUND(HttpStatus.NOT_FOUND,\"U0\",\"유저를 찾을 수 없습니다.\"),\n" +
+                    "    USER_AMOUNT_CANNOT_BE_ZERO(HttpStatus.BAD_REQUEST, \"A0\", \"금액은 0일 수 없습니다.\"),\n" +
+                    "    USER_INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST, \"B0\", \"잔고가 부족합니다.\")," )
     })
     PointHistoryResponse changePoint(PointRequest pointRequest) throws Exception;
 }

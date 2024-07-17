@@ -28,7 +28,7 @@ public class ConcertReserveFacade {
     public Payment concertPayment(ConcertSeatRequest concertSeatRequest) throws Exception {
         // 임시 예약좌석 불러오기
         Long userId = concertSeatRequest.getUserId();
-        ConcertDetail concert = concertDetailService.getConcertDetail(concertSeatRequest.getConcertDetailId());
+        ConcertDetail concertDetail = concertDetailService.getConcertDetail(concertSeatRequest.getConcertDetailId());
         List<ConcertSeat> tempSeats = seatService.findTempSeatByUserId(userId);
         BigDecimal payment = tempSeats.stream().map(ConcertSeat::getPrice).reduce(BigDecimal.ZERO,BigDecimal::add);
         //결제
@@ -38,7 +38,7 @@ public class ConcertReserveFacade {
         userService.save(userPoint);
 
         //예약좌석 업데이트
-        List<ConcertSeat> paymentSeat = seatService.updatedSeat(userId,tempSeats);
+        List<ConcertSeat> paymentSeat = seatService.updatedSeatToReserved(userId,tempSeats);
 
         paymentSeat.forEach(
                 concertSeat -> {
@@ -47,7 +47,7 @@ public class ConcertReserveFacade {
                                   .seatId(concertSeat.getConcertSeatId())
                                   .userId(userId)
                                   .concertDetailId(concertSeatRequest.getConcertDetailId())
-                                  .concertId(concert.getConcertId())
+                                  .concertId(concertDetail.getConcertId())
                                   .build()
                   );
                 }

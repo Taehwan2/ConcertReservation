@@ -9,7 +9,7 @@ import java.util.List;
 public interface SeatRepository {
     List<ConcertSeat> findStatusReserved(Long concertDetailId, SeatStatus reserved);
 
-    ConcertSeat findSeat(Long userId, Long concertDetailId);
+    ConcertSeat findSeat(Long concertDetailId, int seatNo);
 
     ConcertSeat createSeat(ConcertSeat concertSeat);
 
@@ -19,5 +19,5 @@ public interface SeatRepository {
 
     List<ConcertSeat> findTempSeatByUserId(Long userId);
 
-    void updatedSeat(Long userId, List<Long> seatIds);
+    void updatedSeatToReserved(Long userId, List<Long> seatIds);
 }

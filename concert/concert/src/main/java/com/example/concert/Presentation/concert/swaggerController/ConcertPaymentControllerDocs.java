@@ -18,7 +18,9 @@ public interface ConcertPaymentControllerDocs {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description="getQueue",content = @Content(schema =
             @Schema(implementation = Payment.class))),
-            @ApiResponse(responseCode = "404", description = "결제 실패")
+            @ApiResponse(responseCode = "404", description = " USER_INSUFFICIENT_BALANCE(HttpStatus.BAD_REQUEST, \"B0\", \"잔고가 부족합니다.\")," +
+                    "SEAT_NOT_FOUND(HttpStatus.NOT_FOUND,\"S0\",\"좌석을 찾을 수 없습니다.\"),\n" +
+                    "    SEAT_NO_INVALID(HttpStatus.BAD_REQUEST,\"S1\",\"잘못된 좌석번호입니다.\")")
     })
     Payment payment( ConcertSeatRequest concertSeatRequest) throws Exception;
 }

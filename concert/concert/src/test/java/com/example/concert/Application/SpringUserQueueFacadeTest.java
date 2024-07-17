@@ -1,7 +1,6 @@
 package com.example.concert.Application;
 
 import com.example.concert.Presentation.concert.model.queue.QueueRequest;
-import com.example.concert.domain.queue.entitiy.Queue;
 import com.example.concert.domain.queue.entitiy.UserStatus;
 import com.example.concert.domain.queue.service.QueueService;
 import com.example.concert.domain.user.entity.User;
@@ -12,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SpringUserQueueFacadeTest {

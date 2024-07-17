@@ -2,6 +2,8 @@ package com.example.concert.domain.queue.entitiy;
 
 import com.example.concert.Presentation.concert.model.queue.QueueResponse;
 import com.example.concert.common.BaseEntity;
+import com.example.concert.exption.BusinessBaseException;
+import com.example.concert.exption.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +33,7 @@ public class Queue extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-
+    private boolean expired;
     private LocalDateTime expiredAt;
 
     public Queue(long l, long l1, int i, UserStatus waiting, LocalDateTime now) {
@@ -46,6 +48,7 @@ public class Queue extends BaseEntity {
                 .userId(queue.getUserId())
                 .waitingNumber(queue.waitingNumber)
                 .userStatus(queue.getUserStatus())
+                .expired(queue.isExpired())
                 .expiredAt(queue.getExpiredAt())
                 .build();
     }
@@ -55,12 +58,12 @@ public class Queue extends BaseEntity {
     }
 
     public void alreadyWait() throws Exception {
-        if(this.userStatus.equals(UserStatus.WAITING))throw  new Exception("already wait");
+        if(this.userStatus.equals(UserStatus.WAITING))throw new BusinessBaseException(ErrorCode.QUEUE_ALREADY_WAITING);
     }
 
     public void alreadyWorking() throws Exception {
         String errMessage = String.format("it will be expired at [%s]",this.getExpiredAt());
-        if(this.userStatus.equals(UserStatus.WORKING))throw new Exception("already working"+errMessage);
+        if(this.userStatus.equals(UserStatus.WORKING))throw new BusinessBaseException(ErrorCode.QUEUE_ALREADY_WORKING,errMessage);
     }
 
     public void setWait() {
@@ -73,6 +76,7 @@ public class Queue extends BaseEntity {
     }
 
     public void expiry() {
-    this.userStatus =UserStatus.EXPIRED;
+    this.userStatus = null;
+    this.expired = true;
     }
 }
