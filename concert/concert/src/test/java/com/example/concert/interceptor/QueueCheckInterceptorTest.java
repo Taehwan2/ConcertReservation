@@ -36,18 +36,18 @@ class QueueCheckInterceptorTest {
 
     @InjectMocks
     private QueueCheckInterceptor queueCheckInterceptor;
-
+    //Interceptor 검증 하는 테스트
     @Test
-    @DisplayName("대기열에 아예없는 아이디를 입력하고, QUEUE NOT FOUND Expception return")
+    @DisplayName("대기열에 아예없는 아이디를 입력하고, QUEUE NOT FOUND Expception return.")
     void preHandle() throws Exception {
-     //given
+     //given.
         given(request.getHeader("Authorization")).willReturn(null);
 
-    //when
+    //when.
         BusinessBaseException e = (BusinessBaseException) assertThrows(BusinessBaseException.class,()->{
                 queueCheckInterceptor.preHandle(request,response,handle);}
      );
-     //then
+     //then.
      assertThat(e.getErrorCode()).isEqualTo(ErrorCode.QUEUE_NOT_FOUND);
 
 
