@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ConcertDatesController implements ConcertDatesSwaggerDocsController {
     private final ConcertFacade concertFacade;
-
+  //콘서트 예약가능한 날짜를 가져오는 컨트롤러  컨트롤러 파사드를 통해 가져온다.
     @GetMapping("/concert/reservation/days/{concertId}")
     public List<DatesResponse> getAbleDates(@PathVariable(name = "concertId")Long concertId){
         var dates  =  concertFacade.getAbleDates(concertId);
-        return dates.stream()
+        return dates.stream()  //객체 변환
                 .map(ConcertDetail::entityToResponse)
                 .collect(Collectors.toList());
     }

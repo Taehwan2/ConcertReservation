@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-
+//콘서트 파사드 유닛 테스트
 @ExtendWith(MockitoExtension.class)
 class ConcertFacadeTest {
 
@@ -23,7 +23,7 @@ class ConcertFacadeTest {
 
     @Mock
     private ConcertDetailService concertDetailService;
-
+   //ConcertFacade 의 기능을 검증하기 위해서 예약 가능한 일들을 미리 목 객체로 만들어놓고 기능 구현 검증
     @Test
     void getAbleDatesTest() {
         var concertDetail1 = new ConcertDetail(1L,1L, LocalDateTime.now(),LocalDateTime.now());

@@ -29,9 +29,9 @@ class ConcertDatesControllerTest {
 
     @MockBean
     private ConcertFacade concertFacade;
-
+    //콘서트 예약가능일 통합 테스트
     @Test
-    @DisplayName("detail에서 예약이 가능한 날짜를 가져오는 테스트")
+    @DisplayName("detail에서 예약이 가능한 날짜를 가져오는 테스트.")
     void getAbleDates() throws Exception {
         ConcertDetail detail1 = new ConcertDetail(
                 1L,
@@ -53,7 +53,7 @@ class ConcertDatesControllerTest {
         given(concertFacade.getAbleDates(anyLong())).willReturn(details);
 
         //when & then
-        //Todo 나중에는 실제로 좌석이있는지 없는지 Facade에서 다른 서비스와의 관계를 통해 확인하고 가능한 날짜들을 반환해야함
+        //Todo 나중에는 실제로 좌석이있는지 없는지 Facade에서 다른 서비스와의 관계를 통해 확인하고 가능한 날짜들을 반환해야함.
         mockMvc.perform(get("/concert/reservation/days/1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
