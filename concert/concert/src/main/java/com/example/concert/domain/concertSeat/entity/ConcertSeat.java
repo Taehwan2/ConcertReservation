@@ -13,7 +13,11 @@ import java.math.BigDecimal;
         uniqueConstraints = {
                 @UniqueConstraint(name = "concertOptionId_seatNo",
                         columnNames = {"concert_detail_id", "seat_no"}
-                )
+                )},
+        indexes = {
+                @Index(name = "idx_concert_detail_id_seat_status", columnList = "concert_detail_id,seat_status"),
+                @Index(name = "idx_concertDetailId_seatNo", columnList = "concert_detail_id, seat_no"),
+                @Index(name = "idx_seat_status_updated_at", columnList = "seat_status,updated_at")
         }
 ) //유니크 키를 콘서트 옵션아이디랑, 좌석에 걸어서 한 콘서트에 좌석은 하나만 만들어 질 수 있도록 제약조건 추가
 @Getter
