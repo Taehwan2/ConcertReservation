@@ -15,37 +15,37 @@ import java.util.List;
 public class SeatRepositoryImpl implements SeatRepository {
 
     private final SeatJpaRepository seatJpaRepository;
-
+  //1
     @Override
     public List<ConcertSeat> findStatusReserved(Long concertDetailId, SeatStatus reserved) {
         return seatJpaRepository.findByConcertDetailIdAndSeatStatusNot(concertDetailId,reserved);
     }
-
+//2
     @Override
     public ConcertSeat findSeat(Long concertDetailId,int seatNo) {
         return seatJpaRepository.findByConcertDetailIdAndSeatNo(concertDetailId,seatNo);
     }
-
+//3
     @Override
     public ConcertSeat createSeat(ConcertSeat concertSeat) {
         return seatJpaRepository.save(concertSeat);
     }
-
+//4
     @Override
     public List<ConcertSeat> findExpiredInTemp(SeatStatus temp, LocalDateTime localDateTime) {
         return seatJpaRepository.findByUpdatedAtAndStatus(temp,localDateTime);
     }
-
+//5
     @Override
     public void changeSeatsStatus(List<Long> concertId) {
         seatJpaRepository.updateSeatStatusAndUserId(SeatStatus.RESERVABLE,null,concertId);
     }
-
+//6
     @Override
     public List<ConcertSeat> findTempSeatByUserId(Long userId) {
         return seatJpaRepository.findByUserIdAndSeatStatus(userId,SeatStatus.TEMP);
     }
-
+//7
     @Override
     public void updatedSeatToReserved(Long userId, List<Long> seatIds) {
         seatJpaRepository.updateSeatStatusAndUserId(SeatStatus.RESERVED,userId,seatIds);
