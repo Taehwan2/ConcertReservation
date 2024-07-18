@@ -9,6 +9,7 @@ import com.example.concert.domain.reservation.entity.Reservation;
 import com.example.concert.domain.reservation.service.ReservationService;
 import com.example.concert.domain.user.entity.User;
 import com.example.concert.domain.user.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +23,7 @@ import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-
+//결제 기능 테스트
 @ExtendWith(MockitoExtension.class)
 class ConcertReserveFacadeTest {
     @Mock
@@ -41,6 +42,7 @@ class ConcertReserveFacadeTest {
     private ConcertReserveFacade concertReserveFacade;
 
     @Test
+    @DisplayName("실제 로직을 동일하게 하면서 목객체로 좌석을 예약하고 포인트를 통해 결제를 해서 예약정보를 남기고 결제를 하는 로직 검증")
     void concertPayment() throws Exception {
         Long userId = 1L;
         Long concertDetailId = 1L;
@@ -60,7 +62,7 @@ class ConcertReserveFacadeTest {
         given(concertDetailService.getConcertDetail(concertDetailId)).willReturn(concertDetail);
         given(seatService.findTempSeatByUserId(userId)).willReturn(tempSeats);
         given(userService.getUserPoint(userId)).willReturn(userPoint);
-        given(seatService.updatedSeat(userId, tempSeats)).willReturn(tempSeats);
+        given(seatService.updatedSeatToReserved(userId, tempSeats)).willReturn(tempSeats);
 
         // When
         Payment payment = concertReserveFacade.concertPayment(concertSeatRequest);
@@ -70,7 +72,7 @@ class ConcertReserveFacadeTest {
         then(seatService).should().findTempSeatByUserId(userId);
         then(userService).should().getUserPoint(userId);
         then(userService).should().save(userPoint);
-        then(seatService).should().updatedSeat(userId, tempSeats);
+        then(seatService).should().updatedSeatToReserved(userId, tempSeats);
 
 
         assertEquals(true, payment.isCheck());
