@@ -4,13 +4,14 @@ import com.example.concert.Presentation.concert.model.queue.QueueRequest;
 import com.example.concert.domain.queue.entitiy.Queue;
 import com.example.concert.domain.queue.entitiy.UserStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class QueueService {
@@ -19,8 +20,8 @@ public class QueueService {
 
     private final QueueRepository queueRepository;
 
-    public Queue getQueue(Long userId) throws Exception {
-        Queue queue = queueRepository.findQueue(userId); //사용자의 아이디로 대기열을 조회
+    public Queue getQueue(Long waitId) throws Exception {
+        Queue queue = queueRepository.findQueue(waitId); //사용자의 아이디로 대기열을 조회
         queue.alreadyWorking(); // 실행중인지 확인하는 메서드
         updateQueueRank(queue,queue.getQueueId()); //대기순서를 확인하고 업데이트 해주는 메서드
         return queue; //대기열 반환
@@ -29,6 +30,7 @@ public class QueueService {
 
     private void updateQueueRank(Queue queue, Long waitId) {
         int ranking = queueRepository.findRanking(waitId,UserStatus.WAITING);  //대기중인 사람들중 순위를 가져온다
+        log.info("====>ranking{}",ranking);
         queue.updateWaitingNumber(ranking); //도메인 서비스를 통한 업데이트
     }
     @Transactional

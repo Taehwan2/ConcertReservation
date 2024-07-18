@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -24,15 +25,15 @@ public interface QueueJpaRepository extends JpaRepository<Queue,Long> {
    //사용자 아이디로 검색
     Optional<Queue> findByUserId(Long userId);
    //사용자의 대기 순번을 가져오는 코드
-    @Query(value = "SELECT rw.ranking " +
+
+    @Query(value = "SELECT ranking " +
             "FROM ( " +
-            "SELECT @rank := @rank + 1 AS ranking, queue_id " +
-            "FROM queue, (SELECT @rank := 0) r " +
+            "SELECT row_number() OVER (ORDER BY created_at) AS ranking, queue_id " +
+            "FROM queue " +
             "WHERE user_status = :userStatus " +
-            "ORDER BY created_at " +
-            ") AS rw " +
-            "WHERE rw.queue_id = :waitId", nativeQuery = true)
-    int getRanking(Long waitId,UserStatus userStatus);
+            ") AS ranked_waiting " +
+            "WHERE queue_id = :waitId", nativeQuery = true)
+            int getRanking(@Param("waitId") Long waitId, @Param("userStatus") String userStatus);
    //대기열이 만료된 대기열을 가져오는 코드
     @Query("SELECT q FROM Queue q WHERE q.expiredAt <=:now and q.userStatus =:working  ")
     List<Queue> findExpiredQueueOnWorking(UserStatus working, LocalDateTime now);

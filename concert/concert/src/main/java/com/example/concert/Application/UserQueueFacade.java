@@ -14,9 +14,9 @@ public class UserQueueFacade {
     private final UserService userService;
     private final QueueService queueService;
 
-    public Queue getQueue(Long userId, Long waitId) throws Exception {
+    public Queue getQueue(Long userId,Long waitId) throws Exception {
         userService.getUserPoint(userId);   //존재하는 유저인지 검증하는 서비스 호출
-        return queueService.getQueue(userId);  //대기열에서 유저의 대기번호를 가져오는 서비스 호출
+        return queueService.getQueue(waitId);  //대기열에서 유저의 대기번호를 가져오는 서비스 호출
     }
 
     public Queue enrollQueue(QueueRequest queueRequest) throws Exception {

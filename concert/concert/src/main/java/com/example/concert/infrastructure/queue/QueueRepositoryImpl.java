@@ -6,14 +6,17 @@ import com.example.concert.domain.queue.service.QueueRepository;
 import com.example.concert.exption.BusinessBaseException;
 import com.example.concert.exption.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class QueueRepositoryImpl implements QueueRepository {
 
     private final QueueJpaRepository queueJpaRepository;
@@ -44,9 +47,14 @@ public class QueueRepositoryImpl implements QueueRepository {
         return queueJpaRepository.findByUserId(userId).orElseThrow(()->new BusinessBaseException(ErrorCode.QUEUE_NOT_FOUND));
     }
    //순서찾기
+    @Transactional
     @Override //사용자가 대기열 몇번인지 확인하는 코드
     public int findRanking(Long waitId,UserStatus userStatus) {
-        return queueJpaRepository.getRanking(waitId,userStatus);
+        //순서가 안나오는 이유가 문자열이라는 것을 인지하고 수정한 코드
+        Integer ranking = queueJpaRepository.getRanking(waitId, userStatus.toString());
+        log.info("---->{}",ranking);
+        log.info("-====> lof {},{}",waitId,userStatus);
+        return ranking != null ? ranking : -1; // 기본값 설정
     }
     //만료된 대기열 가져오기
     @Override
