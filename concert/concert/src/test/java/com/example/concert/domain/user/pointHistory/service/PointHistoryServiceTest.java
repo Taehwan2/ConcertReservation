@@ -17,16 +17,17 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class PointHistoryServiceTest {
+    //Point History Service unit test
     @InjectMocks
     private PointHistoryService pointHistoryService;
-
+  //User injectMocks
     @Mock
     private PointHistoryRepository pointHistoryRepository;
-
+ //Use Mock
 
     @Test
     @DisplayName("간단한 PointHistorySave기능 테스트")
-    void saveTest() {
+    void saveTest() { //create date
         var history = PointHistory.builder()
                 .userId(1L)
                 .historyId(1L)
@@ -35,13 +36,13 @@ class PointHistoryServiceTest {
                 .build();
 
 
-        //given
+        //given.
         given(pointHistoryRepository.savePointHistory(history)).willReturn(history);
 
-        //when
+        //when.
         var resultHistory = pointHistoryService.save(history);
 
-        //then
+        //then.
         assertThat(history.getPointType()).isEqualTo(PointType.CHARGE);
         assertThat(history.getAmount()).isEqualTo(resultHistory.getAmount());
 

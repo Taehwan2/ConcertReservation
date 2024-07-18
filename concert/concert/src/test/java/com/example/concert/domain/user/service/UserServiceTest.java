@@ -20,25 +20,25 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
-
+    //userService 를 인젝트 목으로 두고 서비스 테스트
     @Mock
     private UserRepository userRepository;
-
+    //레파지토리는 목으로
     @Test
-    @DisplayName("간단한 UserService getUserPoint 테스트")
+    @DisplayName("간단한 UserService getUserPoint 테스트.")
     void getUserPointTest() {
         var user = new User(1L,"태환",new BigDecimal(10000));
 
         //given
-        given(userRepository.getUserPoint(1L)).willReturn(user);
+        given(userRepository.getUserPoint(1L)).willReturn(user);  //객체 입력
 
         //when
-        var resultUser = userService.getUserPoint(1L);
+        var resultUser = userService.getUserPoint(1L);   // 실제 서비스 호출
 
         //then
-        assertThat(resultUser.getName()).isEqualTo("태환");
-        assertThat(resultUser.getName()).isEqualTo(user.getName());
-        assertThat(resultUser.getPoint()).isEqualTo(user.getPoint());
+        assertThat(resultUser.getName()).isEqualTo("태환"); //검증
+        assertThat(resultUser.getName()).isEqualTo(user.getName());  // 검증
+        assertThat(resultUser.getPoint()).isEqualTo(user.getPoint()); //검증
 
     }
 }

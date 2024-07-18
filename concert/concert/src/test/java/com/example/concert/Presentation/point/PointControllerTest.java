@@ -27,23 +27,23 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @SpringBootTest
 @AutoConfigureMockMvc
 class PointControllerTest {
-
+    //포인트 컨트롤러 통합테스트
     @Autowired
     private MockMvc mockMvc;
-
+    // 컨트롤러에서 사용하는 mockMvc 와 userPointFacade를 통한 테스트
     @MockBean
     private UserPointFacade userPointFacade;
 
     @Test
-    @DisplayName("유저아이디 1인 태환이가 가진 포인트를 조회하는 로직")
+    @DisplayName("유저아이디 1인 태환이가 가진 포인트를 조회하는 로직.")
     public void testLookupPointTest() throws Exception {
         User point = new User(1L, "태환", new BigDecimal("100.00"));
 
-        //given
+        //given.
         given(userPointFacade.getUserPoint(1L)).willReturn(point);
 
         //TODO 100이 나와야한다.
-        //when & then
+        //when & then.
         mockMvc.perform(get("/point/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1L))
@@ -51,17 +51,17 @@ class PointControllerTest {
     }
 
     @Test
-    @DisplayName("유저아이디 2인 태환이가 CHARGE 포인트를 충전하는 로직검증")
+    @DisplayName("유저아이디 2인 태환이가 CHARGE 포인트를 충전하는 로직검증.")
     public void testChangePoint() throws Exception {
         PointHistory pointHistory = new PointHistory(1L, 2L, new BigDecimal("50.00"), PointType.CHARGE);
         PointRequest pointRequest = new PointRequest(2L, new BigDecimal("50.00"));
 
-        //TODO 50원이 저장되었다고 나와야한다.
-        //given
+        //TODO 50원이 저장되었다고 나와야한다..
+        //given.
         given(userPointFacade.changePoint(any(PointRequest.class))).willReturn(pointHistory);
 
 
-        //when & then
+        //when & then.
         mockMvc.perform(patch("/point")
                         .contentType(APPLICATION_JSON)
                         .content("{\"userId\": 2, \"charge\": \"50.00\"}"))

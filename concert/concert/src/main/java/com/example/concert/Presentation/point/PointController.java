@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/point")
 public class PointController implements PointControllerDocs {
-
+    // userPointFacade 를 사용해서 API 생성
     private final UserPointFacade userPointFacade;
-
+    //유저 포인트 조회 에이피아이
     @GetMapping("/{userId}")
     public PointResponse lookupPoint(@PathVariable(name = "userId") Long userId){
         var userPoint = userPointFacade.getUserPoint(userId);
         return User.entityToResponse(userPoint);
     }
-
+     //포인트 사용 충전 에이피아이
     @PatchMapping("")
     public PointHistoryResponse changePoint(@RequestBody PointRequest pointRequest) throws Exception {
         var point = userPointFacade.changePoint(pointRequest);

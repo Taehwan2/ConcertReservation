@@ -15,24 +15,24 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class UserPointFacade {
-
+    // 사용자 포인트에 관한 서비스와 그에 대한 결과를 저장하기 위한  서비스를  application 계층에 Facade 로 둔다.
     private final UserService userService;
     private final PointHistoryService pointHistoryService;
 
     public User getUserPoint(Long userId){
         return userService.getUserPoint(userId);
     }
-
+   //사용자의 포인트와 그 결과를 담기 위해서 Transactional 걸어서 메서드를 생성
     @Transactional
     public PointHistory changePoint(PointRequest pointRequest) throws Exception {
         var history = PointHistory.builder().userId(pointRequest.getUserId()).amount(pointRequest.getCharge()).build();
         BigDecimal amount = pointRequest.getCharge();
-
+        // 값을 확인하고 충전인지 사용인지를 확인하는  의 메서드
         history.checkType(amount);
-
+       //userId 에 맞는 포인트를 가져와서 값을 계산하는 로직
         var userPoint = getUserPoint(pointRequest.getUserId());
         userPoint.calculate(amount);
-
+        //계산된 포인트를 저장하고 결과를  pointHistory 저장하는 로직
         userService.save(userPoint);
         return pointHistoryService.save(history);
     }
