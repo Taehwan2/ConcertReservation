@@ -5,10 +5,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+//Swagger Config
 @Configuration
 public class SwaggerConfig {
 
+    // config 설정
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -16,6 +17,7 @@ public class SwaggerConfig {
                 .info(apiInfo());
     }
 
+    //api config  설정
     private Info apiInfo() {
         return new Info()
                 .title("CodeArena Swagger")

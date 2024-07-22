@@ -17,7 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-
+//콘서트 예약가능일 유닛테스트
 @ExtendWith(MockitoExtension.class)
 class ConcertDetailServiceTest {
 
@@ -28,7 +28,7 @@ class ConcertDetailServiceTest {
     private ConcertDetailService concertDetailService;
 
     @Test
-    @DisplayName("ConcertDetail 을 저장하는 기능 검증")
+    @DisplayName("ConcertDetail 을 저장하는 기능 검증.")
     void saveConcertDetailTest() {
 
        var concertDetail = new ConcertDetail(1L,1L, LocalDateTime.now(),LocalDateTime.now());
@@ -44,6 +44,7 @@ class ConcertDetailServiceTest {
     }
 
     @Test
+    @DisplayName("ConcertDetail 을 조회하는 기능.")
     void getConcertDetailTest() {
         var concertDetail = new ConcertDetail(1L,1L, LocalDateTime.now(),LocalDateTime.now());
 
@@ -58,6 +59,7 @@ class ConcertDetailServiceTest {
     }
 
     @Test
+    @DisplayName("가짜 ConcertDetail을 통해서 예약 가능한 일들의 리스트를 반환하는 코드 .")
     void getAbleDatesTest() {
         LocalDateTime tenTimesAgo = LocalDateTime.now().minus(10, ChronoUnit.MINUTES);
         var concertDetail1 = new ConcertDetail(1L,1L, tenTimesAgo,LocalDateTime.now());

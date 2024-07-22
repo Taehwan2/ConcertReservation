@@ -33,9 +33,9 @@ class ConcertControllerTest {
 
     @MockBean
     private UserQueueFacade userQueueFacade;
-
+   //대기열 통합테스트
     @Test
-    @DisplayName("사용자가 자신의 대기 상태를 받아올 수 있는 로직 검증")
+    @DisplayName("사용자가 자신의 대기 상태를 받아올 수 있는 로직 검증.")
     public void testGetQueue() throws Exception {
         Queue queue = new Queue(1L, 1L, 10,UserStatus.WAITING, LocalDateTime.now());
 
@@ -43,8 +43,8 @@ class ConcertControllerTest {
         given(userQueueFacade.getQueue(eq(1L), eq(1L))).willReturn(queue);
 
         //when & then
-        //Todo 현재 상태와 대기열 상태를 반환해야함
-        //TOdo mapper 에서 대기열 번호 계산하는 로직 추가해야함
+        //Todo 현재 상태와 대기열 상태를 반환해야함.
+        //TOdo mapper 에서 대기열 번호 계산하는 로직 추가해야함.
         mockMvc.perform(get("/concert/wait/1/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.queueId").value(1L))
@@ -53,16 +53,16 @@ class ConcertControllerTest {
     }
 
     @Test
-    @DisplayName("사용자가 자신을 대기열에 포함시킬 수 있는 코드")
+    @DisplayName("사용자가 자신을 대기열에 포함시킬 수 있는 코드.")
     public void testEnrollQueue() throws Exception {
         Queue queue = new Queue(1L, 1L,10, UserStatus.WAITING, LocalDateTime.now());
         QueueRequest queueRequest = new QueueRequest(1L);
 
-        //given
+        //given.
         given(userQueueFacade.enrollQueue(any(QueueRequest.class))).willReturn(queue);
 
-        //when & then
-        //Todo 대기열 반환하기.
+        //when & then.
+        //Todo 대기열 반환하기..
         mockMvc.perform(post("/concert/wait")
                         .contentType(APPLICATION_JSON)
                         .content("{\"userId\": 1, \"userStatus\": \"WAITING\"}"))

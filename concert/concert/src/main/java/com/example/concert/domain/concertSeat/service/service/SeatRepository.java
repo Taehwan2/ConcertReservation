@@ -5,7 +5,7 @@ import com.example.concert.domain.concertSeat.entity.SeatStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+//도메인을 위해서 리파지토리 계층 생성
 public interface SeatRepository {
     List<ConcertSeat> findStatusReserved(Long concertDetailId, SeatStatus reserved);
 

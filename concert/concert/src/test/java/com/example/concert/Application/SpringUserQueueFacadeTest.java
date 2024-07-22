@@ -6,6 +6,7 @@ import com.example.concert.domain.queue.service.QueueService;
 import com.example.concert.domain.user.entity.User;
 import com.example.concert.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,8 +27,9 @@ class SpringUserQueueFacadeTest {
     @Autowired
     private UserQueueFacade userQueueFacade;
 
-
+  //실제 통합 테스트로 대기열을 검증하는 테스트 구현
     @BeforeEach
+    // 실제 데이터 베이스에 기존에 필요한 셋팅
     public void enroll() throws Exception {
         var user = new User(1L,"taehwan",new BigDecimal(10000));
         var user1 = new User(2L,"taehwan",new BigDecimal(10000));
@@ -59,12 +61,14 @@ class SpringUserQueueFacadeTest {
 
     }
     @Test
+    @DisplayName("실제 대기열을 가져오는 테스트")
     void getQueue() throws Exception {
         var queue = userQueueFacade.getQueue(6L,6L);
         assertThat(queue.getWaitingNumber()).isEqualTo(3);
     }
 
     @Test
+    @DisplayName("실제 대기열을 등록하는 테스트")
     void enrollQueue() throws Exception {
         QueueRequest queueRequest = new QueueRequest(7L);
         var queue =userQueueFacade.enrollQueue(queueRequest);

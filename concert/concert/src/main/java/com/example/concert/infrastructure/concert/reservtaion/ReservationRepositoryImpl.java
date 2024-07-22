@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class ReservationRepositoryImpl implements ReservationRepository {
 
     private final ReservationJpaRepository reservationJpaRepository;
-
+    //예약/결제 현황 저장
     @Override
     public Reservation save(Reservation reservation) {
         return reservationJpaRepository.save(reservation);

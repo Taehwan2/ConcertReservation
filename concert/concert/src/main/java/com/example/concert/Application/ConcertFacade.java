@@ -15,7 +15,7 @@ public class ConcertFacade {
 
     private final ConcertDetailService concertDetailService;
     private final ConcertService concertService;
-
+  //콘서트를 먼저 조회하고 콘서트가 있다면 콘서트의 옵션을 통해서 예약가능일 검증
     @Transactional
     public List<ConcertDetail> getAbleDates(Long concertId) {
         concertService.getConcert(concertId);

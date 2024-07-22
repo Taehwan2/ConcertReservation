@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class UserPointFacadeTest {
-
+    //유저 포인트 파사드 테스
     @InjectMocks
     private UserPointFacade userPointFacade;
 
@@ -33,7 +33,7 @@ class UserPointFacadeTest {
     private PointHistoryService pointHistoryService;
 
     @Test
-    @DisplayName("정말 간단한 시행 테스트")
+    @DisplayName("간단한 기능 검증")
     void getUserPointTest() {
         var user = new User(1L,"태환",new BigDecimal(10000));
         //given
@@ -48,6 +48,8 @@ class UserPointFacadeTest {
     }
 
     @Test
+    @DisplayName("포인트 조회 및 충전 파사드 검증")
+    //유저 객층에 못넣어서 여기 추가
     void changePointTest() throws Exception {
         var pointRequest = new PointRequest(1L,new BigDecimal(1000));
         var user = new User(1L,"태환",new BigDecimal(2000));

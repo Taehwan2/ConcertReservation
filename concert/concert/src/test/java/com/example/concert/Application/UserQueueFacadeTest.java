@@ -6,6 +6,7 @@ import com.example.concert.domain.queue.entitiy.UserStatus;
 import com.example.concert.domain.queue.service.QueueService;
 import com.example.concert.domain.user.entity.User;
 import com.example.concert.domain.user.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,34 +28,36 @@ class UserQueueFacadeTest {
     private UserQueueFacade userQueueFacade;
 
     @Test
+    @DisplayName("이름이 태환인 대기열 가져오는 테스트")
     void getQueueTest() throws Exception {
         User user = User.builder().userId(1L).name("태환").build();
         Queue queue = Queue.builder().queueId(1L).userId(1L).userStatus(UserStatus.WAITING).waitingNumber(10).build();
-        //given
+        //given.
         given(userService.getUserPoint(1L)).willReturn(user);
         given(queueService.getQueue(1L)).willReturn(queue);
 
-        //when
+        //when.
         var result = userQueueFacade.getQueue(1L,1L);
 
-        //then
+        //then.
         assertThat(result.getQueueId()).isEqualTo(result.getQueueId());
         assertThat(result.getUserStatus()).isEqualTo(result.getUserStatus());
 
     }
 
     @Test
+    @DisplayName("이름이 태환인 사람의 대기열을 등록해주는 테스트")
     void enrollQueueTest() throws Exception {
         User user = User.builder().userId(1L).name("태환").build();
         Queue queue = Queue.builder().queueId(1L).userId(1L).userStatus(UserStatus.WAITING).waitingNumber(10).build();
         QueueRequest queueRequest = new QueueRequest(1L);
-        //given
+        //given.
         given(userService.getUserPoint(1L)).willReturn(user);
         given(queueService.registerQueue(queueRequest)).willReturn(queue);
-
+        //when
         var result = userQueueFacade.enrollQueue(queueRequest);
 
-        //then
+        //then.
         assertThat(result.getQueueId()).isEqualTo(result.getQueueId());
         assertThat(result.getUserStatus()).isEqualTo(result.getUserStatus());
     }
