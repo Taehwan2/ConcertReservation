@@ -59,13 +59,14 @@ public class SeatService {
         if(size == SEAT_LIMIT) throw new Exception("ALREAY FULL SEAT");
     }
 
+    //이번 과제의 핵심로직
     @Transactional
     public ConcertSeat reserveSeatTemp(ConcertSeatRequest concertSeatRequest) throws Exception {
-        Long userId = concertSeatRequest.getUserId();
+        Long userId = concertSeatRequest.getUserId(); 
         Long concertDetailId = concertSeatRequest.getConcertDetailId();
         int seatNo = concertSeatRequest.getSeatNo();
         if(seatNo<0 || seatNo>SEAT_LIMIT)throw new BusinessBaseException(ErrorCode.SEAT_NO_INVALID);
-        //유니크 제약 조건이걸린 콘서트 속성 과 좌석 번호를 가져와서
+        //사실상 유니크 제약조건 이 걸려있어서 Lock을 안걸어도된다고 허재코치님께서 말씀하셨지만, 좌석 조회에 비관적락을 거는 로직
         ConcertSeat concertSeat = seatRepository.findSeat(concertDetailId,concertSeatRequest.getSeatNo());
         //없는 좌석이면 새롭게 추가를 하고
         if(concertSeat==null){
@@ -77,13 +78,14 @@ public class SeatService {
                     .build();
             
             return seatRepository.createSeat(request);
-        } //있는 좌석이면 userId 랑 상태만 추가해서 사용한다.
+        } //있는 좌석이면 userId 랑 상태만 추가해서 업데이트한다.
         if(concertSeat.getSeatStatus() == SeatStatus.RESERVABLE){
             concertSeat.setSeatStatus(SeatStatus.TEMP);
             concertSeat.setUserId(userId);
             seatRepository.updateSeat(concertSeat);
             return concertSeat;
         }
+        //예약을 실패할 경우 아래를 탄다.
         throw new Exception("CAN'T SEAT TO RESERVE");
     }
 
