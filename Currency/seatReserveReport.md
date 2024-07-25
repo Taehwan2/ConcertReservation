@@ -5,7 +5,9 @@
 
 
 ## 2. 비관적 락 구현
-
+공유락은 데이터를 반복 읽기만 하고 수정하지 않을 때 사용한다. 
+데이터베이스 대부분은 방언에 의해 PESSIMISTIC_WRITE 로 동작한다.
+보장이 안되기에 쓰기락을 사용했다.
 ```
   @Transactional
     public ConcertSeat reserveSeatTemp(ConcertSeatRequest concertSeatRequest) throws Exception {
