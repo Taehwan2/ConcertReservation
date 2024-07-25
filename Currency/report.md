@@ -18,5 +18,5 @@
 
 시간으로 측정했을 때는 675초가 나오게 된다.
 
-https://www.notion.so/338f574f16a84b079e8d164a056747fc?pvs=4#6bdff4b0a87f4e738d063271883a312d
 
+![1](https://github.com/user-attachments/assets/6f5b8f0a-c79a-4541-912f-e55a206a7de4)
