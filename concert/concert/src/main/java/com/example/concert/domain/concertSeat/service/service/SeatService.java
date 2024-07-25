@@ -5,7 +5,13 @@ import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.entity.SeatStatus;
 import com.example.concert.exption.BusinessBaseException;
 import com.example.concert.exption.ErrorCode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +25,14 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SeatService {
 
     private  final Integer SEAT_LIMIT = 10; //좌석 최대 10자리 까지 가능
     private final Integer SEAT_TIME = 5;  //임시 예약 5분까지 가능
     private final SeatRepository seatRepository;
-    
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public List<ConcertSeat> FindAbleSeats(Long concertDetailId) throws Exception {
         List<ConcertSeat> reservedSeats = seatRepository.findStatusReserved(concertDetailId, SeatStatus.RESERVABLE);  //예약가능한 자리 빼고 불러오는 리스트
@@ -73,7 +81,8 @@ public class SeatService {
         if(concertSeat.getSeatStatus() == SeatStatus.RESERVABLE){
             concertSeat.setSeatStatus(SeatStatus.TEMP);
             concertSeat.setUserId(userId);
-            return  seatRepository.createSeat(concertSeat);
+            seatRepository.updateSeat(concertSeat);
+            return concertSeat;
         }
         throw new Exception("CAN'T SEAT TO RESERVE");
     }

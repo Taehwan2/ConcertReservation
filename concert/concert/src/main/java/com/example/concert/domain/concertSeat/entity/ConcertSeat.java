@@ -35,8 +35,9 @@ public class ConcertSeat extends BaseEntity {
     private SeatStatus seatStatus; //좌석 상태
     private Integer seatNo; //좌석 번호
     private BigDecimal price; //좌석 가격
+    
 
-   //객체 변환
+    //객체 변환
     public static ConcertSeatResponse entityToResponse(ConcertSeat concertSeat){
         return ConcertSeatResponse.builder()
                 .concertSeatId(concertSeat.getConcertSeatId())

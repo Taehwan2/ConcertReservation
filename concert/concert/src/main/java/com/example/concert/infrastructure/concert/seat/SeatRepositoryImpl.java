@@ -20,7 +20,7 @@ public class SeatRepositoryImpl implements SeatRepository {
     public List<ConcertSeat> findStatusReserved(Long concertDetailId, SeatStatus reserved) {
         return seatJpaRepository.findByConcertDetailIdAndSeatStatusNot(concertDetailId,reserved);
     }
-//2
+    //좌석을 예약하기전에 좌석을 조회하는 로직 -> 비관적 락 걸어도 되고 안걸어도된다 -> 낙관적 Lock은 효율이없기에 아예 배제
     @Override
     public ConcertSeat findSeat(Long concertDetailId,int seatNo) {
         return seatJpaRepository.findByConcertDetailIdAndSeatNo(concertDetailId,seatNo);
@@ -45,9 +45,15 @@ public class SeatRepositoryImpl implements SeatRepository {
     public List<ConcertSeat> findTempSeatByUserId(Long userId) {
         return seatJpaRepository.findByUserIdAndSeatStatus(userId,SeatStatus.TEMP);
     }
-//7
+//
     @Override
     public void updatedSeatToReserved(Long userId, List<Long> seatIds) {
         seatJpaRepository.updateSeatStatusAndUserId(SeatStatus.RESERVED,userId,seatIds);
+    }
+
+    //좌석을 업데이트하는 쿼리
+    @Override
+    public Integer updateSeat(ConcertSeat concertSeat) {
+        return seatJpaRepository.updateSeatStatusAndUserId(concertSeat.getUserId(),SeatStatus.TEMP,concertSeat.getSeatNo());
     }
 }

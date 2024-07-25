@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
 
@@ -29,6 +28,16 @@ public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
   //예약되어있는 좌석들고오기
     List<ConcertSeat> findByUserIdAndSeatStatus(Long userId, SeatStatus temp);
 
-   //유닉크키가 걸려있는 부분 들고오기
+    //유닉크키가 걸려있는 부분 들고오기
+    //비관적 락 사용 --> 하지만 Lock을 안걸어도 ConcertDetailId와 SeatId에 유니크 제약조건이 걸려있기때문에
+    //하나의 트렌젝션이 예약에 성공한다면 중복 에러로 동시성을 이미 처리했음
+    //있어도되고 없어도 되는 락임
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT c FROM ConcertSeat c Where c.concertDetailId = :concertDetailId AND c.seatNo = :seatNo")
     ConcertSeat findByConcertDetailIdAndSeatNo(Long concertDetailId, int seatNo);
+
+    //이미 사용자가 좌석을 예약했지만 구매하지않고 userId와 예약가능한 상태로 남았을 때 userId와 좌석 상태를 업데이트 해주는 메서
+    @Modifying
+    @Query("UPDATE ConcertSeat c set c.seatStatus = :reservable , c.userId = :userId WHERE c.concertSeatId =:seatNo")
+    int updateSeatStatusAndUserId(Long userId, SeatStatus reservable, Integer seatNo);
 }
