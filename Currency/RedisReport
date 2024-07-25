@@ -1,0 +1,85 @@
+## 1. redis simple lock
+```
+    public PointHistory changePoint(PointRequest pointRequest) throws Exception {
+        String lockKey = "point:lock"+pointRequest.getUserId();
+        String uniqueKey = String.valueOf(System.currentTimeMillis());
+        Duration lockDuration = Duration.ofMinutes(1);
+
+
+        var history = PointHistory.builder().userId(pointRequest.getUserId()).amount(pointRequest.getCharge()).build();
+        BigDecimal amount = pointRequest.getCharge();
+        // 값을 확인하고 충전인지 사용인지를 확인하는  의 메서드
+        history.checkType(amount);
+       //userId 에 맞는 포인트를 가져와서 값을 계산하는 로직
+
+        boolean lock = lockService.getLock(lockKey,uniqueKey,lockDuration);
+        log.info("====> here is lock ");
+        if(!lock){
+            throw new Exception("you don't have lock");
+        }
+        try {
+            log.info("I have a lock");
+            userService.calculate(pointRequest.getUserId(), amount);
+        }catch (Exception e){
+            log.info("Excetpion"+e);
+        }finally {
+            lockService.outLock(lockKey,uniqueKey);
+        }
+        return pointHistoryService.save(history);
+    }
+}
+
+
+@SpringBootTest
+@EnableRetry
+public class UserPointCurrencyTest {
+@Autowired
+private UserService userService;
+
+@Autowired
+private UserPointFacade userPointFacade;
+
+private static final int THREAD_COUNT = 3;
+
+@BeforeEach
+void beforeEach() throws Exception {
+    userService.save(new User(1L,"taehwan",new BigDecimal(1000)));
+}
+
+@Test
+public void testConcurrentSeatReservation() throws InterruptedException {
+    System.out.println(userService.getUserPoint(1L).getName());
+    ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
+    CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+    int random = new Random().nextInt(10000);
+
+    long startTime = System.currentTimeMillis();
+    for (int i = 0; i < THREAD_COUNT; i++) {
+        executorService.submit(() -> {
+            try {
+                userPointFacade.changePoint(new PointRequest(1L,new BigDecimal(5000)));
+                System.out.println(userService.getUserPoint(1L).getPoint());
+            } catch (OptimisticLockingFailureException e){
+                System.out.println("여기걸림");
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
+            } finally {
+                latch.countDown();
+            }
+        });
+    }
+
+    latch.await();
+    executorService.shutdown();
+    System.out.println(userService.getUserPoint(1L).getPoint());
+
+    long endTime = System.currentTimeMillis(); // 종료 시간 측정
+    System.out.println("Execution time: " + (endTime - startTime) + " ms"); // 실행 시간 출력
+}
+
+
+```
+
+  
+  redis에서 lock을 걸고 userPoint를 등록하는 부분에 transaction을 걸어놓고 실행을 하게되면 
+248초 걸리지만 락을 획득하지 못하는 애들은 한번더 로직을 실행하지 못한다. 그렇기에 모든 로직을 수행하지 못하고 끝난다. sprin lock을 사용해보겠다.
