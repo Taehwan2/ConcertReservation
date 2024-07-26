@@ -35,7 +35,8 @@ public class ConcertSeat extends BaseEntity {
     private SeatStatus seatStatus; //좌석 상태
     private Integer seatNo; //좌석 번호
     private BigDecimal price; //좌석 가격
-    
+    @Version    //낙관적 락을 위해 version정보 삽입
+    private int version;
 
     //객체 변환
     public static ConcertSeatResponse entityToResponse(ConcertSeat concertSeat){
