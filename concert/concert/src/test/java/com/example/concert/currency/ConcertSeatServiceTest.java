@@ -37,7 +37,7 @@ public class ConcertSeatServiceTest {
     void before(){
         seatRepository.save(ConcertSeat.builder().concertDetailId(1L).concertSeatId(1L).seatNo(1).version(1).seatStatus(SeatStatus.RESERVABLE).build());
     }
-    @Test
+       @Test
     @DisplayName("이미 좌석이 예약되어있는경우 비관적Lock으로 조회하고 update로직을 실행하여 한 트랜잭션이 성공하면 아래는 모두 update를 실패한다.")
     public void testConcurrentSeatReservation() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
@@ -54,25 +54,23 @@ public class ConcertSeatServiceTest {
                     System.out.println(result.getSeatStatus());
                     System.out.println(result.getUserId());
                     System.out.println(result.getSeatNo());
-                }catch (OptimisticLockingFailureException e){
+                } catch (OptimisticLockingFailureException e) {
                     System.out.println("낙관적락에 걸림");
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println("Exception: " + e.getMessage());
                 } finally {
                     latch.countDown();
                 }
             });
         }
+                latch.await();
+                executorService.shutdown();
+                long endTime = System.currentTimeMillis(); // 종료 시간 측정
+                System.out.println("Execution time: " + (endTime - startTime) + " ms"); // 실행 시간 출력
 
-        latch.await();
-        executorService.shutdown();
+            }
 
-
-        long endTime = System.currentTimeMillis(); // 종료 시간 측정
-        System.out.println("Execution time: " + (endTime - startTime) + " ms"); // 실행 시간 출력
-    }
-
+}
     @DisplayName("[좌석이 없는 경우] - 동시에 여러명이 한 좌석을 예약하는 경우 1명만 예약이 되어야 한다.")
     @Test
     void test_temporaryReservationSeat_notRow() throws InterruptedException {
