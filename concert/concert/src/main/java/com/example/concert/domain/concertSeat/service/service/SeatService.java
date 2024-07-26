@@ -34,6 +34,7 @@ public class SeatService {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     public List<ConcertSeat> FindAbleSeats(Long concertDetailId) throws Exception {
         List<ConcertSeat> reservedSeats = seatRepository.findStatusReserved(concertDetailId, SeatStatus.RESERVABLE);  //예약가능한 자리 빼고 불러오는 리스트
         checkSize(reservedSeats.size());  //예약된 자리의 크기를 검증하는 메서드
@@ -60,13 +61,15 @@ public class SeatService {
     }
 
     //이번 과제의 핵심로직
+    //재처리가 필요하다면 재처리 @Retryable로직을 넣었겠지만, 한번 누군가 좌석을 예약하면 재처리할 필요가 없기 때문에
+    //비관적 Lock보다는 낙관적 Lock을 통해서 해결결
     @Transactional
     public ConcertSeat reserveSeatTemp(ConcertSeatRequest concertSeatRequest) throws Exception {
         Long userId = concertSeatRequest.getUserId(); 
         Long concertDetailId = concertSeatRequest.getConcertDetailId();
         int seatNo = concertSeatRequest.getSeatNo();
         if(seatNo<0 || seatNo>SEAT_LIMIT)throw new BusinessBaseException(ErrorCode.SEAT_NO_INVALID);
-        //사실상 유니크 제약조건 이 걸려있어서 Lock을 안걸어도된다고 허재코치님께서 말씀하셨지만, 좌석 조회에 비관적락을 거는 로직
+        //사실상 유니크 제약조건 이 걸려있어서 Lock을 안걸어도된다고 허재코치님께서 말씀하셨지만 과제여서 추가
         ConcertSeat concertSeat = seatRepository.findSeat(concertDetailId,concertSeatRequest.getSeatNo());
         //없는 좌석이면 새롭게 추가를 하고
         if(concertSeat==null){
