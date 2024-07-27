@@ -20,4 +20,6 @@ public interface SeatRepository {
     List<ConcertSeat> findTempSeatByUserId(Long userId);
 
     void updatedSeatToReserved(Long userId, List<Long> seatIds);
+
+    Integer updateSeat(ConcertSeat concertSeat);
 }

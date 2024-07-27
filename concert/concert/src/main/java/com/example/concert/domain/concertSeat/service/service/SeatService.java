@@ -5,7 +5,13 @@ import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.entity.SeatStatus;
 import com.example.concert.exption.BusinessBaseException;
 import com.example.concert.exption.ErrorCode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +25,15 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SeatService {
 
     private  final Integer SEAT_LIMIT = 10; //좌석 최대 10자리 까지 가능
     private final Integer SEAT_TIME = 5;  //임시 예약 5분까지 가능
     private final SeatRepository seatRepository;
-    
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     public List<ConcertSeat> FindAbleSeats(Long concertDetailId) throws Exception {
         List<ConcertSeat> reservedSeats = seatRepository.findStatusReserved(concertDetailId, SeatStatus.RESERVABLE);  //예약가능한 자리 빼고 불러오는 리스트
@@ -51,13 +60,16 @@ public class SeatService {
         if(size == SEAT_LIMIT) throw new Exception("ALREAY FULL SEAT");
     }
 
+    //이번 과제의 핵심로직
+    //재처리가 필요하다면 재처리 @Retryable로직을 넣었겠지만, 한번 누군가 좌석을 예약하면 재처리할 필요가 없기 때문에
+    //비관적 Lock보다는 낙관적 Lock을 통해서 해결결
     @Transactional
     public ConcertSeat reserveSeatTemp(ConcertSeatRequest concertSeatRequest) throws Exception {
-        Long userId = concertSeatRequest.getUserId();
+        Long userId = concertSeatRequest.getUserId(); 
         Long concertDetailId = concertSeatRequest.getConcertDetailId();
         int seatNo = concertSeatRequest.getSeatNo();
         if(seatNo<0 || seatNo>SEAT_LIMIT)throw new BusinessBaseException(ErrorCode.SEAT_NO_INVALID);
-        //유니크 제약 조건이걸린 콘서트 속성 과 좌석 번호를 가져와서
+        //사실상 유니크 제약조건 이 걸려있어서 Lock을 안걸어도된다고 허재코치님께서 말씀하셨지만 과제여서 추가
         ConcertSeat concertSeat = seatRepository.findSeat(concertDetailId,concertSeatRequest.getSeatNo());
         //없는 좌석이면 새롭게 추가를 하고
         if(concertSeat==null){
@@ -69,12 +81,14 @@ public class SeatService {
                     .build();
             
             return seatRepository.createSeat(request);
-        } //있는 좌석이면 userId 랑 상태만 추가해서 사용한다.
+        } //있는 좌석이면 userId 랑 상태만 추가해서 업데이트한다.
         if(concertSeat.getSeatStatus() == SeatStatus.RESERVABLE){
             concertSeat.setSeatStatus(SeatStatus.TEMP);
             concertSeat.setUserId(userId);
-            return  seatRepository.createSeat(concertSeat);
+            seatRepository.updateSeat(concertSeat);
+            return concertSeat;
         }
+        //예약을 실패할 경우 아래를 탄다.
         throw new Exception("CAN'T SEAT TO RESERVE");
     }
 

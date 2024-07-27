@@ -24,4 +24,14 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUserPoint(Long userId) {
         return userJpaRepository.findById(userId).orElseThrow(()->new BusinessBaseException(ErrorCode.USER_NOT_FOUND));
     }
+
+    @Override
+    public User getUserPointWithLock(Long userId) {
+        return userJpaRepository.findByIdWithLock(userId).orElseThrow(()->new BusinessBaseException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Override
+    public int updateUserPoint(User userPoint) {
+        return userJpaRepository.updateUserPoint(userPoint.getUserId(),userPoint.getPoint());
+    }
 }
