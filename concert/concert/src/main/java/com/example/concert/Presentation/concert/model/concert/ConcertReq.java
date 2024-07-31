@@ -26,6 +26,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Getter
 @Setter
 @Configuration
+//역직열화 예방을 위한 선언
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -36,6 +37,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 })
 
 public class ConcertReq {
+    //이름
     private String name;
+    //장르
     private String genre;
 }
