@@ -23,4 +23,10 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public Concert getConcert(Long concertId) {
         return concertJpaRepository.findById(concertId).orElseThrow(()->new BusinessBaseException(ErrorCode.CONCERT_NOT_FOUND));
     }
+
+
+    @Override
+    public void deleteConcert(Long concertId) {
+         concertJpaRepository.deleteById(concertId);
+    }
 }

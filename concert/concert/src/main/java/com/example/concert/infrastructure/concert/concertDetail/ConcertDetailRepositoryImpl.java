@@ -31,4 +31,9 @@ public class ConcertDetailRepositoryImpl implements ConcertDetailRepository {
     public List<ConcertDetail> getAbleDates(Long concertId) {
         return concertDetailJpaRepository.findAllByConcertIdAndBeforeStartDateAndReservationStartDate(concertId, LocalDateTime.now());
     }
+
+    @Override
+    public void deleteConcertDetail(Long concertDetailId) {
+         concertDetailJpaRepository.deleteById(concertDetailId);
+    }
 }

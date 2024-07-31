@@ -6,10 +6,6 @@ import com.example.concert.domain.user.pointHistory.entity.PointHistory;
 import com.example.concert.domain.user.pointHistory.enumType.PointType;
 import com.example.concert.domain.user.pointHistory.service.PointHistoryService;
 import com.example.concert.domain.user.service.UserService;
-import com.example.concert.redis.LockService;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +23,6 @@ public class UserPointFacade {
     private final UserService userService;
     private final PointHistoryService pointHistoryService;
 
-    private final LockService lockService;
 
     public User getUserPoint(Long userId){
         return userService.getUserPoint(userId);

@@ -7,4 +7,8 @@ public interface ConcertRepository {
     Concert saveConcert(Concert concert);
 
     Concert getConcert(Long concertId);
+
+
+
+    void deleteConcert(Long concertId);
 }
