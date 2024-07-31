@@ -2,11 +2,9 @@ package com.example.concert.domain.concertdetail.entity;
 
 import com.example.concert.Presentation.concert.model.date.DatesResponse;
 import com.example.concert.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "concert_detail")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

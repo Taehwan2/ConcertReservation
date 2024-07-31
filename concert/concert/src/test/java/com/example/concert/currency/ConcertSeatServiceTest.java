@@ -33,11 +33,17 @@ public class ConcertSeatServiceTest {
 
     private static final int THREAD_COUNT = 100;
     //비관적 Lock은 insert에 존재하지 않음으로. 좌석이 있다는 가정하에 비관적락 테스트
-   @BeforeEach
+/*   @BeforeEach
     void before(){
+<<<<<<< Updated upstream
         seatRepository.save(ConcertSeat.builder().concertDetailId(1L).concertSeatId(1L).seatNo(1).version(1).seatStatus(SeatStatus.RESERVABLE).build());
     }
        @Test
+=======
+        seatRepository.save(ConcertSeat.builder().concertDetailId(1L).concertSeatId(1L).seatNo(1).seatStatus(SeatStatus.RESERVABLE).build());
+    }*/
+    @Test
+>>>>>>> Stashed changes
     @DisplayName("이미 좌석이 예약되어있는경우 비관적Lock으로 조회하고 update로직을 실행하여 한 트랜잭션이 성공하면 아래는 모두 update를 실패한다.")
     public void testConcurrentSeatReservation() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);

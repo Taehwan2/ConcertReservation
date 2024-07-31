@@ -11,4 +11,6 @@ public interface ConcertDetailRepository {
     ConcertDetail getConcert(Long concertDetailId);
 
     List<ConcertDetail> getAbleDates(Long concertId);
+
+    void deleteConcertDetail(Long concertDetailId);
 }

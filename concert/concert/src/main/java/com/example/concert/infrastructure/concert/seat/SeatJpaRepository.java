@@ -32,6 +32,11 @@ public interface SeatJpaRepository extends JpaRepository<ConcertSeat, Long> {
     //낙관적 락 사용 --> 하지만 Lock을 안걸어도 ConcertDetailId와 SeatId에 유니크 제약조건이 걸려있기때문에
     //어짜피 한명만 통과하면 되기때문에 비관적 락을 걸필요 없음 락 획득 실패시 끝나느 로직
     //하나의 트렌젝션이 예약에 성공한다면 중복 에러로 동시성을 이미 처리했음
+<<<<<<< Updated upstream
+=======
+    //있어도되고 없어도 되는 락임
+   /* @Lock(LockModeType.PESSIMISTIC_WRITE)*/
+>>>>>>> Stashed changes
     @Query("SELECT c FROM ConcertSeat c Where c.concertDetailId = :concertDetailId AND c.seatNo = :seatNo")
     ConcertSeat findByConcertDetailIdAndSeatNo(Long concertDetailId, int seatNo);
 

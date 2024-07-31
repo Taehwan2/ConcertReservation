@@ -24,3 +24,7 @@ logging:
   level:
     root: INFO
     com.example.concert.filter.LogFilter: DEBUG
+
+  redis:
+    host: localhost
+    port: 6379

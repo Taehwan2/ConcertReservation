@@ -30,6 +30,9 @@ public class User  extends BaseEntity {
    //사용자 포인트
     private BigDecimal point;
     //포인트 변환하는 로직
+
+
+
     public void setPoint(BigDecimal point) {
         this.point = point;
     }
@@ -41,7 +44,7 @@ public class User  extends BaseEntity {
                 .build();
     }
    //실제 계산하는 로직
-    public void calculate(BigDecimal amount) throws Exception {
+    public void calculate(BigDecimal amount) throws BusinessBaseException {
         //변수 초기화
         BigDecimal tempAmount = this.getPoint().add(amount);
 

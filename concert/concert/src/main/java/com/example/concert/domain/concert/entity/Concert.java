@@ -1,15 +1,14 @@
 package com.example.concert.domain.concert.entity;
 
 import com.example.concert.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "concert")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
