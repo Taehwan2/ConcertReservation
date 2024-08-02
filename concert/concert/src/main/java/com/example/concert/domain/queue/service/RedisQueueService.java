@@ -76,6 +76,24 @@ public class RedisQueueService {
         return false;
     }
 
+    public boolean  findExpiredAtAndUpdate2(Long userId) {
+        Set<String> activeTokens = customStringRedisTemplate.opsForSet().members("active_tokens"); //활성 대기열에서 모든 토큰을 가져와서
+
+        if (activeTokens == null || activeTokens.isEmpty()) { //토큰이 없다면 거짓을 반환하고
+            return false;
+        }
+
+        long currentTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+
+        for (String tokenMetaInfo : activeTokens) { //있다면 반복문을 돌면서 주어진 userid 와 같다면 만료시간을 채크하고 만료되지 않았으면 참을 반환
+            String[] parts = tokenMetaInfo.split(":");
+            if (String.valueOf(userId).equals(parts[0])) {
+                customStringRedisTemplate.opsForSet().remove("active_tokens",tokenMetaInfo);
+            }
+        }
+        return false;
+    }
+
     @Scheduled(cron = "0/20 * * * * *") //20초씩 돌면서 50명을 활성화 시켜주는 코드
     @Transactional
     public void  checkExpiredAtAndUpdateDone(){
