@@ -75,7 +75,7 @@ public class RedisQueueService {
         }
         return false;
     }
-
+    //결제완료후 제거해주는 로직
     public boolean  findExpiredAtAndUpdate2(Long userId) {
         Set<String> activeTokens = customStringRedisTemplate.opsForSet().members("active_tokens"); //활성 대기열에서 모든 토큰을 가져와서
 
@@ -85,7 +85,7 @@ public class RedisQueueService {
 
         long currentTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
 
-        for (String tokenMetaInfo : activeTokens) { //있다면 반복문을 돌면서 주어진 userid 와 같다면 만료시간을 채크하고 만료되지 않았으면 참을 반환
+        for (String tokenMetaInfo : activeTokens) { //있다면 반복문을 돌면서 주어진 userid 와 같다면 
             String[] parts = tokenMetaInfo.split(":");
             if (String.valueOf(userId).equals(parts[0])) {
                 //로직완료 후 userId에 해당하는 엑티브 토큰 삭제
