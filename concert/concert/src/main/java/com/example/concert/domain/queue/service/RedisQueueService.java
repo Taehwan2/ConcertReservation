@@ -88,6 +88,7 @@ public class RedisQueueService {
         for (String tokenMetaInfo : activeTokens) { //있다면 반복문을 돌면서 주어진 userid 와 같다면 만료시간을 채크하고 만료되지 않았으면 참을 반환
             String[] parts = tokenMetaInfo.split(":");
             if (String.valueOf(userId).equals(parts[0])) {
+                //로직완료 후 userId에 해당하는 엑티브 토큰 삭제
                 customStringRedisTemplate.opsForSet().remove("active_tokens",tokenMetaInfo);
             }
         }
