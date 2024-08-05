@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Configuration
+//역직렬화를 위한 선언
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -25,9 +26,9 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = ConcertDetailReq.class, name = "concertDetailReq")
 })
 public class ConcertDetailReq {
-
+    //시작일
     private LocalDateTime startDate;
-
+    //예약시작일
     private LocalDateTime reservationStartDate;
 
 }

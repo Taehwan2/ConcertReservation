@@ -8,6 +8,7 @@ import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.service.service.SeatService;
 import com.example.concert.domain.concertdetail.entity.ConcertDetail;
 import com.example.concert.domain.concertdetail.service.ConcertDetailService;
+import com.example.concert.domain.queue.service.RedisQueueService;
 import com.example.concert.domain.reservation.entity.Reservation;
 import com.example.concert.domain.reservation.service.ReservationService;
 import com.example.concert.domain.user.service.UserService;
@@ -24,6 +25,7 @@ public class ConcertReserveFacade {
     private final UserService userService;
     private final ReservationService reservationService;
     private final ConcertDetailService concertDetailService;
+    private final RedisQueueService redisQueueService;
    //실제 결제 로직
     public Payment concertPayment(ConcertSeatRequest concertSeatRequest) throws Exception {
         // 임시 예약좌석 불러오기.
@@ -56,6 +58,8 @@ public class ConcertReserveFacade {
 
         var pay = Payment.builder().check(true).build();
         //예약 반환.
+
+        redisQueueService.findExpiredAtAndUpdate2(userId);
         return pay;
     }
 }

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
+//캐시태스트
 @SpringBootTest
 @EnableRetry
 class ConcertCacheServiceTest {
@@ -34,21 +34,21 @@ class ConcertCacheServiceTest {
     @Autowired
     private CacheManager cacheManager;
     @Test
-    @DisplayName("concertId가 1L인 객체를 한번조회하고 캐시에 저장해서 hit가 발생하여 repository 횟수가 1로 유지되는 테스트")
+    @DisplayName("concertId가 1L인 객체를 한번조회하고 캐시에 저장해서 hit가 발생하여 repository 횟수가 1로 유지되는 테스트.")
     void getConcert() {
         Long concertId = 1L;
         Concert concert = new Concert();
         concert.setConcertId(concertId);
-        //given
+        //given.
         given(concertRepository.getConcert(concertId)).willReturn(concert);
 
 
         //when&then
-        // 첫 번째 호출: 캐시 미스
+        // 첫 번째 호출: 캐시 미스.
         Concert result1 = concertService.getConcert(concertId);
         verify(concertRepository, times(1)).getConcert(concertId);
 
-        // 두 번째 호출: 캐시 히트
+        // 두 번째 호출: 캐시 히트.
         Concert result2 = concertService.getConcert(concertId);
         verify(concertRepository, times(1)).getConcert(concertId);
 
@@ -57,7 +57,7 @@ class ConcertCacheServiceTest {
     }
 
     @Test
-    @DisplayName("concert 이름과 장르를 amundi와 action으로 변경하고 변경된 내용이 캐시에 갱신되는지 확인하는 테스트")
+    @DisplayName("concert 이름과 장르를 amundi와 action으로 변경하고 변경된 내용이 캐시에 갱신되는지 확인하는 테스트.")
     void updateConcert() {
         Long concertId = 1L;
         Concert concert = new Concert();
@@ -65,7 +65,7 @@ class ConcertCacheServiceTest {
         concert.setName("amundi");
         concert.setGenre("action");
 
-        //given
+        //given.
         given(concertRepository.getConcert(concertId)).willReturn(concert);
         given(concertRepository.saveConcert(concert)).willReturn(concert);
 
@@ -73,7 +73,7 @@ class ConcertCacheServiceTest {
         concertReq.setGenre("amundi");
         concertReq.setGenre("action");
 
-        //when&then
+        //when&then.
         concertService.getConcert(concertId);
         verify(concertRepository, times(1)).getConcert(concertId);
 
@@ -83,21 +83,21 @@ class ConcertCacheServiceTest {
     }
 
     @Test
-    @DisplayName("concertId가 1인 객체를 삭제했을 때 캐시에서 지워지는 지 확인하는 테스트")
+    @DisplayName("concertId가 1인 객체를 삭제했을 때 캐시에서 지워지는 지 확인하는 테스트.")
     void deleteConcert() {
         Long concertId = 1L;
         Concert concert = new Concert();
         concert.setConcertId(concertId);
 
-        //given
+        //given.
         given(concertRepository.getConcert(concertId)).willReturn(concert);
 
-        // 캐시에 저장
-        //when&then
+        // 캐시에 저장.
+        //when&then.
         concertService.getConcert(concertId);
         verify(concertRepository, times(1)).getConcert(concertId);
 
-        // 캐시에서 삭제
+        // 캐시에서 삭제.
         concertService.deleteConcert(concertId);
         assertThat(cacheManager.getCache("concertDetail").get(concertId)).isNull();
     }

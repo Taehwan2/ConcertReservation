@@ -1,5 +1,6 @@
 package com.example.concert.interceptor;
 
+import com.example.concert.domain.queue.service.RedisQueueService;
 import com.example.concert.exption.BusinessBaseException;
 import com.example.concert.exption.ErrorCode;
 import com.example.concert.domain.queue.service.QueueService;
@@ -23,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 class QueueCheckInterceptorTest {
 
     @Mock
-    private QueueService queueService;
+    private RedisQueueService queueService;
 
     @Mock
     private HttpServletRequest request;
@@ -58,7 +59,7 @@ class QueueCheckInterceptorTest {
     void preHandle2() throws Exception {
         //given
         given(request.getHeader("Authorization")).willReturn("1");
-        given(queueService.isWorking(1L)).willReturn(false);
+        given(queueService.findExpiredAtAndUpdate(1L)).willReturn(false);
         //when
         BusinessBaseException e = (BusinessBaseException) assertThrows(BusinessBaseException.class,()->{
             queueCheckInterceptor.preHandle(request,response,handle);}
@@ -74,7 +75,7 @@ class QueueCheckInterceptorTest {
     void preHandle3() throws Exception {
         //given
         given(request.getHeader("Authorization")).willReturn("1");
-        given(queueService.isWorking(1L)).willReturn(true);
+        given(queueService.findExpiredAtAndUpdate(1L)).willReturn(true);
 
         //when
       boolean  result = queueCheckInterceptor.preHandle(request,response,handle);
