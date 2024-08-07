@@ -54,7 +54,7 @@ seatno를 단독으로해서 하는 쿼리가 없기때문에 위와같은  결�
 
 #### 2. 좌석 조회
 
-``` select * from concert_seat where concert_detail_id = 12 and seat_status = 'TEMP' ```
+``` select * from concert_seat where concert_detail_id = 12 and seat_status = 'RESERVEABLE' ```
 예약 가능한 좌석을 조회하기 위해서
 '예약된 상태가 아닌 모든 좌석을 불러오기 위한' 쿼리.
 이 쿼리는 예약가능한 좌석이 뭐가있는지 확인할 때 쓰는 쿼리여서 많은 사람들이 사용하는 쿼리라고 판단했습니다.
