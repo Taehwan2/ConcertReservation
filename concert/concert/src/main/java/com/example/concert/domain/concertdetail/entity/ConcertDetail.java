@@ -10,7 +10,12 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "concert_detail")
+//콘서트 예약 가능일을 처리하기 위해서 만든 인덱스
+@Table(name = "concert_detail",
+        indexes = {
+                @Index(name = "idx_concert_id_start_date_reservation_start_date",
+                   columnList = "concert_id, start_date, reservation_start_date") //추가
+        })
 @Getter
 @Setter
 @Builder
