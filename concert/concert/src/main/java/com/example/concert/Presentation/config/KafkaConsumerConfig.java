@@ -21,7 +21,7 @@ public class KafkaConsumerConfig {
 
 
     private String bootstrapServers = "localhost:9092";
-    /*
+
        @Bean
        public ConsumerFactory<String, ReservationOutBox> consumerFactory() {
 
@@ -41,7 +41,7 @@ public class KafkaConsumerConfig {
            factory.setConsumerFactory(consumerFactory());
            return factory;
        }
-       */
+
     @Bean
     public ConsumerFactory<String, String> stringConsumerFactory() {
         Map<String, Object> config = new HashMap<>();

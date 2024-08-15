@@ -38,7 +38,7 @@ public class KafkaConfiguration {
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);  // JSON 직렬화기 사용
         return new DefaultKafkaProducerFactory<>(configs);
     }
-    /*
+
     @Bean
     public ProducerFactory<String, ReservationOutBox> producerFactory() {
         Map<String, Object> properties = new HashMap<>();
@@ -54,7 +54,7 @@ public class KafkaConfiguration {
     public KafkaTemplate<String, ReservationOutBox> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
-    */
+
     @Bean
     public KafkaTemplate<String, Reservation> kafkaTemplate2() {
         return new KafkaTemplate<>(producerFactory2());
