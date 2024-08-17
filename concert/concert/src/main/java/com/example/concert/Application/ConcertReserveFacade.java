@@ -1,17 +1,21 @@
 package com.example.concert.Application;
 
-import com.example.concert.Application.outer.MessageService;
-import com.example.concert.Presentation.concert.model.seat.ConcertSeatRequest;
-import com.example.concert.Presentation.point.model.PointRequest;
+import com.example.concert.Presentation.api.concert.model.seat.ConcertSeatRequest;
+import com.example.concert.Presentation.api.point.model.PointRequest;
 import com.example.concert.domain.concertSeat.entity.ConcertSeat;
 import com.example.concert.domain.concertSeat.service.service.SeatService;
 import com.example.concert.domain.concertdetail.entity.ConcertDetail;
 import com.example.concert.domain.concertdetail.service.ConcertDetailService;
+import com.example.concert.infrastructure.outbox.ReservationOutBox;
+import com.example.concert.infrastructure.outbox.ReservationOutBoxStatus;
 import com.example.concert.domain.queue.service.RedisQueueService;
 import com.example.concert.domain.reservation.entity.Reservation;
 import com.example.concert.domain.reservation.event.ReservationCompletedEvent;
 import com.example.concert.domain.reservation.service.ReservationService;
 import com.example.concert.domain.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -31,10 +35,12 @@ public class ConcertReserveFacade {
 
     private final ApplicationEventPublisher eventPublisher; // 이벤트 퍼블리셔 추가
 
-    private final MessageService messageService;
+
    //실제 결제 로직
     @Transactional
     public Payment concertPayment(ConcertSeatRequest concertSeatRequest) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         // 임시 예약좌석 불러오기.
         Long userId = concertSeatRequest.getUserId();
         ConcertDetail concertDetail = concertDetailService.getConcertDetail(concertSeatRequest.getConcertDetailId());
@@ -60,15 +66,27 @@ public class ConcertReserveFacade {
 
             reservationService.saveReservation(reservation);
 
-            // 예약 완료 이벤트 발행
-            eventPublisher.publishEvent(new ReservationCompletedEvent(this, reservation));
+
+            String json = null;
+            try {
+                json = objectMapper.writeValueAsString(reservation);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            //이벤트 발행 -> 카프카
+            var outBox = ReservationOutBox.builder().id(reservation.getReservationId()).message(json).outBoxStatus(ReservationOutBoxStatus.INIT).build();
+            eventPublisher.publishEvent(new ReservationCompletedEvent(this,outBox));
         });
 
 
         var pay = Payment.builder().check(true).build();
         //예약 반환.
 
-        redisQueueService.findExpiredAtAndUpdate2(userId);
+        //redisQueueService.findExpiredAtAndUpdate2(userId);
         return pay;
     }
+
+
+
+
 }
